@@ -89,7 +89,7 @@ def ddg(q, que):
 	que.put(results)
 
 def yahoo(q, que):
-	yahoo = Yahoo("How to scrape Yahoo with Python", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0")
+	yahoo = Yahoo(q, "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0")
 	results = []
 	for link in yahoo:
 		r = requests.get(link, headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0'})
@@ -106,7 +106,7 @@ def yahoo(q, que):
 
 class search:
 	def GET(self):
-		i = web.input(q="")
+		i = web.input(q="", sort="list")
 		if i.q != "":
 			queue1 = Queue()
 			queue2 = Queue()
@@ -125,7 +125,7 @@ class search:
 			duckduckgo = queue3.get()
 			yhoo = queue4.get()
 			p.join()
-			return render.search(goog, b, duckduckgo, yhoo, i.q)
+			return render.search(goog, b, duckduckgo, yhoo, i.q, i.sort)
 		else:
 			return render.home()
 

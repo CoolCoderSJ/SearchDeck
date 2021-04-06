@@ -1,8 +1,10 @@
-$def with (google, bing, duckduckgo, yahoo, q)
+$def with (google, bing, duckduckgo, yahoo, q, sort)
 <!doctype html>
 <html>
 	<head>
 		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 		<title>SearchDeck</title>
 		<style type="text/css">
 			a {
@@ -22,63 +24,139 @@ $def with (google, bing, duckduckgo, yahoo, q)
 				flex-direction: column;
 			}
 
+			.material-icons {
+				float: right;
+				border-radius: 6px;
+				padding: 5px;
+			}
+			.material-icons:hover {
+				cursor: pointer;
+				background: #595959;
+			}
 		</style>
+
+		<script>
+
+function sort(style) {
+	var q = document.getElementById("q").value
+	window.location.href = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}`
+}
+		</script>
 	</head>
 	<body style="overflow: auto !important;">
 		<h2>SearchDeck</h2><br>
-		<form method="get" action="/">
-		<input class="input" name="q" placeholder="Search Anything...." value="$q">
+		<form method="get" action="/" id="search">
+		<div>
+			<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px" onclick="document.getElementById('search').submit()">
+				search
+			</span>
+		<input class="input" id="q" name="q" placeholder="Search Anything...." value="$q" style="width: 97%">
+		<input type="hidden" value="$sort">
+		</div>
 		</form>
 		<br><br>
-		<ul>
-			<li><a href="#google">Google</a></li>
-			<li><a href="#bing">Bing</a></li>
-			<li><a href="#ddg">DuckDuckGo</a></li>
-			<li><a href="#yahoo">Yahoo</a></li>
-		</ul>
-		<br><br><br>
-		<div id='containter'>
-		<div class="page" id="google">
-			<h2>Google</h2>
-			<br><br>
-			$for result in google:
-				<a href="$result['link']" target="_blank">
-				<div class="card">
-					<h3>$result['title']</h3>
-				</div>
-				</a>
-		</div>
-		<div class="page" id="bing">
-			<h2>Bing</h2>
-			<br><br>
-			$for result in bing:
-				<a href="$result['link']" target="_blank">
-				<div class="card">
-					<h3>$result['title']</h3>
-					<p>$result['desc']</p>
-				</div>
-				</a>
-		</div>
-		<div class="page" id="ddg">
-			<h2>DuckDuckGo</h2>
-			<br><br>
-			$for result in duckduckgo:
-				<a href="$result['link']" target="_blank">
-				<div class="card">
-					<h3>$result['title']</h3>
-				</div>
-				</a>
-		</div>
-		<div class="page" id="yahoo">
-			<h2>Yahoo</h2>
-			<br><br>
-			$for result in yahoo:
-				<a href="$result['link']" target="_blank">
-				<div class="card">
-					<h3>$result['title']</h3>
-				</div>
-				</a>
-		</div>
-		</div>
+		<span class="material-icons"  onclick="sort('table')">
+grid_view
+</span>
+		<span class="material-icons" onclick="sort('list')">
+list
+</span>
+
+<br><br>
+		$if sort =="list":
+			<ul>
+				<li><a href="#google">Google</a></li>
+				<li><a href="#bing">Bing</a></li>
+				<li><a href="#ddg">DuckDuckGo</a></li>
+				<li><a href="#yahoo">Yahoo</a></li>
+			</ul>
+			<br><br><br>
+			<div id='containter'>
+			<div class="page" id="google">
+				<h2>Google</h2>
+				<br><br>
+				$for result in google:
+					<a href="$result['link']" target="_blank">
+					<div class="card">
+						<h3>$result['title']</h3>
+					</div>
+					</a>
+			</div>
+			<div class="page" id="bing">
+				<h2>Bing</h2>
+				<br><br>
+				$for result in bing:
+					<a href="$result['link']" target="_blank">
+					<div class="card">
+						<h3>$result['title']</h3>
+						<p>$result['desc']</p>
+					</div>
+					</a>
+			</div>
+			<div class="page" id="ddg">
+				<h2>DuckDuckGo</h2>
+				<br><br>
+				$for result in duckduckgo:
+					<a href="$result['link']" target="_blank">
+					<div class="card">
+						<h3>$result['title']</h3>
+					</div>
+					</a>
+			</div>
+			<div class="page" id="yahoo">
+				<h2>Yahoo</h2>
+				<br><br>
+				$for result in yahoo:
+					<a href="$result['link']" target="_blank">
+					<div class="card">
+						<h3>$result['title']</h3>
+					</div>
+					</a>
+			</div>
+			</div>
+		$else:
+			<table class="text">
+				<tr>
+					<th>Google</th>
+					<th>Bing</th>
+					<th>DuckDuckGo</th>
+					<th>Yahoo</th>
+				</tr>
+				$ x = 0
+				$ g = len(google)
+				$ b = len(bing)
+				$ d = len(duckduckgo)
+				$ y = len(yahoo)
+				$if g > b and g > d and g > y:
+					$ num = g
+				$if b > g and b > d and b > y:
+					$ num = b
+				$if d > g and d > b and d > y:
+					$ num = d
+				$if y > b and y > d and y > g:
+					$ num = y
+				$for x in range(num):
+					<tr>
+						$if len(google) > x:
+							<td><a href="$google[x]['link']">$google[x]['title']</a></td>
+						$else:
+							<td></td>
+
+						$if len(bing) > x:
+							<td><a href="$bing[x]['link']">$bing[x]['title']</a></td>
+						$else:
+							<td></td>
+
+						$if len(duckduckgo) > x:
+							<td><a href="$duckduckgo[x]['link']">$duckduckgo[x]['title']</a></td>
+						$else:
+							<td></td>
+
+						$if len(yahoo) > x:
+							<td><a href="$yahoo[x]['link']">$yahoo[x]['title']</a></td>
+						$else:
+							<td></td>
+					</tr>
+			</table>
 	</body>
 </html>

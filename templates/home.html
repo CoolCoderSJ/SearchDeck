@@ -2,13 +2,20 @@
 <html>
 	<head>
 		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 		<title>SearchDeck</title>
 	</head>
 	<body>
 		<h2>SearchDeck</h2>
 		<br><br><br>
-		<form method="get" action="/">
-		<input class="input" name="q" placeholder="Search Anything....">
+		<form method="get" action="/" id="search">
+		<div>
+			<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px; border-radius: 6px;" onclick="document.getElementById('search').submit()">
+				search
+			</span>
+		<input class="input" name="q" placeholder="Search Anything...." style="width: 97%">
+		</div>
 		</form>
 	</body>
 </html>
