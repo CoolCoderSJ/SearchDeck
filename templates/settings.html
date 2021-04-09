@@ -1,4 +1,4 @@
-$def with (logged_in, settings)
+$def with (settings)
 <!doctype html>
 <html>
 	<head>
@@ -8,7 +8,7 @@ $def with (logged_in, settings)
 		<title>SearchDeck</title>
 		<meta name="theme-color" content="#000EF2">
 <meta content="SearchDeck" property="og:title">
-<meta name="og:site_name" content="SearchDeck">
+<meta name="og:site_name" content="">
 <meta name="twitter:title" content="SearchDeck">
 <meta name="twitter:description" content="Search the Web! Search 4 different search engines at once and see the results side-by-side.">
 <meta name="twitter:image" content="">
@@ -17,28 +17,14 @@ $def with (logged_in, settings)
 <link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
 <div class="topnav text">
 <a class="brand" href="/">SearchDeck</a>
-<div class="topnavitem">
-			$if logged_in == False:
-    			<a class="topnavitem active" href="/login">Login</a>
-  				<a class="topnavitem" href="/signup">Signup</a>
-	<span class="material-icons" style="float: right; margin-top: 10px; margin-right: 30px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
-	settings
-	</span>
-		</div>
-		</div> 
+<span class="material-icons" style="float: right; margin-top: 10px; margin-right: 30px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
+					settings
+				</span>
+</div> 
 	</head>
 	<body>
-		<h2>SearchDeck</h2>
-		<br><br><br>
-		<form method="get" action="/" id="search">
-		<div>
-			<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px; border-radius: 6px;" onclick="document.getElementById('search').submit()">
-				search
-			</span>
-		<input class="input" name="q" placeholder="Search Anything...." style="width: 97%">
-		</div>
-		<br><br>
-		<h2>Advanced Search</h2><br>
+		<form method="post" action="settings">
+		<h2>User Settings</h2><br>
 		<h3>Search Engines to Display -</h3>
 		$if "Google" in settings['engines']:
 			<label class="container">Google
@@ -86,7 +72,7 @@ $def with (logged_in, settings)
 
 		<br>
 		<br>
-		<h3>What to Search</h3><br>
+		<h3>What to Search by Default</h3><br>
 		$if settings['default_typ'] == "text":
 			<label class="container">Text
 			<input type="radio" checked="checked" value="text" name="typ">
@@ -193,6 +179,40 @@ $def with (logged_in, settings)
 			<span class="radio"></span>
 			</label>
 		
+		<br>
+		<br>
+		<h3>How to Display Results by Default</h3><br>
+		$if settings['default_sort'] == "list":
+			<label class="container">List
+			<input type="radio" checked="checked" value="list" name="sort">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Table
+			<input type="radio" value="grid" name="sort">
+			<span class="radio"></span>
+			</label>
+		$else:
+			<label class="container">List
+			<input type="radio" value="list" name="sort">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Table
+			<input type="radio" value="table" checked="checked" name="sort">
+			<span class="radio"></span>
+			</label>
+		<br><br>
+		$if settings['cache'] == 'Enabled':
+			<label class="container">Use Cache
+			<input type="checkbox" checked="checked" name="cache">
+			<span class="checkmark"></span>
+			</label>
+		$if settings['cache'] == 'Disabled':
+			<label class="container">Use Cache
+			<input type="checkbox" name="cache">
+			<span class="checkmark"></span>
+			</label>
+		<br><br>
+		<button type="submit">Save</button>
 		</form>
 	</body>
 </html>

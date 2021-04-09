@@ -1,0 +1,56 @@
+$def with (msg)
+<!DOCTYPE html>
+<html>
+			<link rel="icon" 
+      type="image/ico" 
+      href="https://sjurl.tk/static/images/favicon.ico">
+		<meta name="theme-color" content="#000EF2">
+<meta content="SearchDeck" property="og:title">
+<meta name="og:site_name" content="SearchDeck">
+<meta name="twitter:title" content="SearchDeck">
+<meta name="twitter:description" content="Search the Web! Search 4 different search engines at once and see the results side-by-side.">
+<meta name="twitter:image" content="">
+<meta name="og:image" content="">
+<meta content="Search the Web! Search 4 different search engines at once and see the results side-by-side." property="og:description">
+	<head>
+		<link rel="stylesheet" href="https://minimalist.coolcodersj.repl.co/style.css">
+		<title>Login | SearchDeck</title>
+		<div class="topnav text">
+		<a class="brand" href="/">SearchDeck</a>
+		<div class="topnavitem">
+    <a class="topnavitem active" href="/login">Login</a>
+  <a class="topnavitem" href="/signup">Signup</a>
+ 
+  </div>
+</div> 
+		<style>
+			form {
+				padding: 20px;
+			}
+		</style>
+		<style>
+		html {
+			margin-top: 110px;
+		}
+		</style>
+	</head>
+
+	<body>
+
+$if msg != "":
+	<h4 class="alert">$msg</h4><br><br>
+	
+<form method="post" action = "login">
+
+  <div class="form-group">
+    <input type="username" class="input" id="short" name="user"  aria-describedby="emailHelp" placeholder="Username" required>
+
+    <input type="password" class="input" id="url" name="passw" required placeholder="Password" required>
+  </div>
+
+	<br>
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+<iframe height="500px" width="100%" src="https://sjauth.coolcodersj.repl.co/badge" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+	</body>
+</html>

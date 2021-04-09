@@ -1,12 +1,32 @@
-$def with (google, bing, duckduckgo, yahoo, q, sort)
+$def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 <!doctype html>
 <html>
 	<head>
-		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+	  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
 		<title>SearchDeck</title>
-		<style type="text/css">
+		<meta name="theme-color" content="#000EF2">
+<meta content="Search Results for $q | SearchDeck" property="og:title">
+<meta name="og:site_name" content="">
+<meta name="twitter:title" content="Search Results for $q | SearchDeck">
+<meta name="twitter:description" content="Search the Web! Search 4 different search engines at once and see the results side-by-side.">
+<meta name="twitter:image" content="">
+<meta name="og:image" content="">
+<meta content="Search the Web! Search 4 different search engines at once and see the results side-by-side." property="og:description">
+<link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
+		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
+			<div class="topnav text">
+		<a class="brand" href="/">SearchDeck</a>
+		<div class="topnavitem">
+			$if not logged_in:
+    			<a class="topnavitem active" href="/login">Login</a>
+  				<a class="topnavitem" href="/signup">Signup</a>
+		<span class="material-icons" style="float: right; margin-top: 10px; margin-right: 30px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
+				settings
+			</span>
+		</div>
+		</div> 
+			<style type="text/css">
 			a {
 				text-decoration: none;
 			}
@@ -33,130 +53,315 @@ $def with (google, bing, duckduckgo, yahoo, q, sort)
 				cursor: pointer;
 				background: #595959;
 			}
-		</style>
+				#video, .card {
+					background: #16191d !important;
+					padding-bottom: 40px !important;
+					padding-left: 20px !important;
+					padding-right: 10px !important; 
+					padding-top: 20px !important;
+					border: none !important;
+					border-radius: 8px !important;
+					width: 100% !important;
+					height: 100% !important;
+					transition: 0.5s !important;
+					scale: 100% !important;
+				}
+				#video:hover, .card:hover {
+					transition: 0.5s !important;
+					scale: 110% !important;
+				}
+			</style>
 
-		<script>
+			<script>
 
-function sort(style) {
-	var q = document.getElementById("q").value
-	window.location.href = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}`
-}
-		</script>
+				function sort(style) {
+					console.log("ree")
+					var q = document.getElementById("q").value;
+					engines = document.getElementsByClassName("engine");
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}`;
+					var i;
+					for (i=0; i < engines.length; i++) {
+						a = engines[i].value;
+						b = engines[i].name;
+						console.log(a)
+						console.log(b)
+						url += `&$${b}=$${a}`;
+					};
+					window.location.href = url
+				};
+				function typ(type) {
+					var q = document.getElementById("q").value;
+					var style = document.getElementsByName("sort")[0].value;
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}&typ=$${type}`;
+					engines = document.getElementsByClassName("engine");
+					var i;
+					for (i=0; i < engines.length; i++) {
+						a = engines[i].value
+						b = engines[i].name
+						url += `&$${b}=$${a}`
+					};
+					window.location.href = url
+				};
+			</script>
+			<h2>SearchDeck</h2><br>
+			<form method="get" action="/" id="search">
+			<div>
+				<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px" onclick="document.getElementById('search').submit()">
+					search
+				</span>
+			<input class="input" id="q" name="q" placeholder="Search Anything...." value="$q" style="width: 97%">
+			<input type="hidden" value="$sort" name="sort">
+			<input type="hidden" value="$typ" name="typ">
+			$for engine in engines:
+				<input type="hidden" value="on" class="engine" name="$engine">
+			</div>
+			</form>
+			<br><br>
+			<span class="material-icons" style="float: left;" onclick="typ('text')">
+			article
+			</span>
+			<span class="material-icons" style="float: left;" onclick="typ('image')">
+			image
+			</span>
+			<span class="material-icons" style="float: left;" onclick="typ('video')">
+			smart_display
+			</span>
+			<span class="material-icons" style="float: left;" onclick="typ('news')">
+			feed
+			</span>
+			<span class="material-icons" style="float: left;" onclick="typ('maps')">
+			location_on
+			</span>
+			<span class="material-icons"  onclick="sort('table')">
+			grid_view
+			</span>
+					<span class="material-icons" onclick="sort('list')">
+			list
+			</span>
+			<br><br>
 	</head>
 	<body style="overflow: auto !important;">
-		<h2>SearchDeck</h2><br>
-		<form method="get" action="/" id="search">
-		<div>
-			<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px" onclick="document.getElementById('search').submit()">
-				search
-			</span>
-		<input class="input" id="q" name="q" placeholder="Search Anything...." value="$q" style="width: 97%">
-		<input type="hidden" value="$sort">
-		</div>
-		</form>
 		<br><br>
-		<span class="material-icons"  onclick="sort('table')">
-grid_view
-</span>
-		<span class="material-icons" onclick="sort('list')">
-list
-</span>
-
-<br><br>
-		$if sort =="list":
-			<ul>
-				<li><a href="#google">Google</a></li>
-				<li><a href="#bing">Bing</a></li>
-				<li><a href="#ddg">DuckDuckGo</a></li>
-				<li><a href="#yahoo">Yahoo</a></li>
-			</ul>
-			<br><br><br>
-			<div id='containter'>
-			<div class="page" id="google">
-				<h2>Google</h2>
-				<br><br>
-				$for result in google:
-					<a href="$result['link']" target="_blank">
-					<div class="card">
-						<h3>$result['title']</h3>
+		$if typ == 'text':
+			$if sort =="list":
+				<ul>
+					$if "Google" in engines:
+						<li><a href="#google">Google</a></li>
+					$if "Bing" in engines:
+						<li><a href="#bing">Bing</a></li>
+					$if "DuckDuckGo" in engines:
+						<li><a href="#ddg">DuckDuckGo</a></li>
+					$if "Yahoo" in engines:
+						<li><a href="#yahoo">Yahoo</a></li>
+				</ul>
+				<br><br><br>
+				<div id='containter'>
+				$if "Google" in engines:
+					<div id="google">
+						<h2>Google</h2>
+						<br><br>
+						$for result in google:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+							</div>
+							</a>
 					</div>
-					</a>
-			</div>
-			<div class="page" id="bing">
-				<h2>Bing</h2>
-				<br><br>
-				$for result in bing:
-					<a href="$result['link']" target="_blank">
-					<div class="card">
-						<h3>$result['title']</h3>
-						<p>$result['desc']</p>
+				$if "Bing" in engines:
+					<div id="bing">
+						<h2>Bing</h2>
+						<br><br>
+						$for result in bing:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+								<p>$result['desc']</p>
+							</div>
+							</a>
 					</div>
-					</a>
-			</div>
-			<div class="page" id="ddg">
-				<h2>DuckDuckGo</h2>
-				<br><br>
-				$for result in duckduckgo:
-					<a href="$result['link']" target="_blank">
-					<div class="card">
-						<h3>$result['title']</h3>
+				$if "DuckDuckGo" in engines:
+					<div id="ddg">
+						<h2>DuckDuckGo</h2>
+						<br><br>
+						$for result in duckduckgo:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+							</div>
+							</a>
 					</div>
-					</a>
-			</div>
-			<div class="page" id="yahoo">
-				<h2>Yahoo</h2>
-				<br><br>
-				$for result in yahoo:
-					<a href="$result['link']" target="_blank">
-					<div class="card">
-						<h3>$result['title']</h3>
+				$if "Yahoo" in engines:
+					<div id="yahoo">
+						<h2>Yahoo</h2>
+						<br><br>
+						$for result in yahoo:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+							</div>
+							</a>
 					</div>
-					</a>
-			</div>
-			</div>
-		$else:
-			<table class="text">
-				<tr>
-					<th>Google</th>
-					<th>Bing</th>
-					<th>DuckDuckGo</th>
-					<th>Yahoo</th>
-				</tr>
-				$ x = 0
-				$ g = len(google)
-				$ b = len(bing)
-				$ d = len(duckduckgo)
-				$ y = len(yahoo)
-				$if g > b and g > d and g > y:
-					$ num = g
-				$if b > g and b > d and b > y:
-					$ num = b
-				$if d > g and d > b and d > y:
-					$ num = d
-				$if y > b and y > d and y > g:
-					$ num = y
-				$for x in range(num):
+				</div>
+			$else:
+				<table class="text">
 					<tr>
-						$if len(google) > x:
-							<td><a href="$google[x]['link']">$google[x]['title']</a></td>
-						$else:
-							<td></td>
-
-						$if len(bing) > x:
-							<td><a href="$bing[x]['link']">$bing[x]['title']</a></td>
-						$else:
-							<td></td>
-
-						$if len(duckduckgo) > x:
-							<td><a href="$duckduckgo[x]['link']">$duckduckgo[x]['title']</a></td>
-						$else:
-							<td></td>
-
-						$if len(yahoo) > x:
-							<td><a href="$yahoo[x]['link']">$yahoo[x]['title']</a></td>
-						$else:
-							<td></td>
+						$if "Google" in engines:
+							<th>Google</th>
+						$if "Bing" in engines:
+							<th>Bing</th>
+						$if "DuckDuckGo" in engines:
+							<th>DuckDuckGo</th>
+						$if "Yahoo" in engines:
+							<th>Yahoo</th>
 					</tr>
-			</table>
+					$ lis = [len(google), len(bing), len(duckduckgo), len(yahoo)] 
+					$lis.sort()
+					$ num = lis[-1]
+					$for x in range(num):
+						<tr>
+							$if "Google" in engines:
+								$if len(google) > x:
+									<td><a href="$google[x]['link']" target="_blank">$google[x]['title']</a></td>
+								$else:
+									<td></td>
+							$if "Bing" in engines:
+								$if len(bing) > x:
+									<td><a href="$bing[x]['link']" target="_blank">$bing[x]['title']</a></td>
+								$else:
+									<td></td>
+							$if "DuckDuckGo" in engines:
+								$if len(duckduckgo) > x:
+									<td><a href="$duckduckgo[x]['link']" target="_blank">$duckduckgo[x]['title']</a></td>
+								$else:
+									<td></td>
+							$if "Yahoo" in engines:
+								$if len(yahoo) > x:
+									<td><a href="$yahoo[x]['link']" target="_blank">$yahoo[x]['title']</a></td>
+								$else:
+									<td></td>
+						</tr>
+				</table>
+		$elif typ =="image":
+			<script>
+				function toggle(engine) {
+					if (engine == "google") {
+						document.getElementById("bing").style.display = 'none';
+						document.getElementById("yahoo").style.display = 'none';
+						document.getElementById("duckduckgo").style.display = 'none';
+						document.getElementById("google").style.display = 'block';
+					}
+					if (engine == "bing") {
+						document.getElementById("bing").style.display = 'block';
+						document.getElementById("yahoo").style.display = 'none';
+						document.getElementById("duckduckgo").style.display = 'none';
+						document.getElementById("google").style.display = 'none';
+					}
+					if (engine == "duckduckgo") {
+						document.getElementById("bing").style.display = 'none';
+						document.getElementById("yahoo").style.display = 'none';
+						document.getElementById("duckduckgo").style.display = 'block';
+						document.getElementById("google").style.display = 'none';
+					}
+					if (engine == "yahoo") {
+						document.getElementById("bing").style.display = 'none';
+						document.getElementById("yahoo").style.display = 'block';
+						document.getElementById("duckduckgo").style.display = 'none';
+						document.getElementById("google").style.display = 'none';
+					}
+				}
+			</script>
+			<ul>
+				$if "Google" in engines:
+					<li onclick="toggle('google')" onmouseover="cursor: pointer;">Google</li>
+				$else:
+					<li onclick="toggle('google')" style="display: none;">Google</li>
+
+				$if "Bing" in engines:
+					<li onclick="toggle('bing')" onmouseover="cursor: pointer;">Bing</li>
+				$else:
+					<li onclick="toggle('bing')" style="display: none;">Bing</li>
+
+				$if "DuckDuckGo" in engines:
+					<li onclick="toggle('duckduckgo')" onmouseover="cursor: pointer;">DuckDuckGo</li>
+				$else:
+					<li onclick="toggle('duckduckgo')" style="display: none;">DuckDuckGo</li>
+
+				$if "Yahoo" in engines:
+					<li onclick="toggle('yahoo')" onmouseover="cursor: pointer;">Yahoo</li>
+				$else:
+					<li onclick="toggle('yahoo')" style="display: none;">Yahoo</li>
+			</ul>
+			<br><br>
+			<div id="google">
+				$if "Google" in engines:
+					$for img in google:
+						<img src="$img">
+			</div>
+			<div id="bing" style="display: none;">
+				$if "Bing" in engines:
+					$for img in bing:
+						<img src="$img">
+			</div>
+			<div id="duckduckgo" style="display: none;">
+				$if "DuckDuckGo" in engines:
+					$for img in duckduckgo:
+						<img src="$img">
+			</div>
+			<div id="yahoo" style="display: none;">
+				$if "Yahoo" in engines:
+					$for img in yahoo:
+						<img src="$img">
+			</div>
+		
+		$elif typ == "video":
+			$for video in google:
+				<a href="https://youtube.com/$video['url_suffix']" target="_blank">
+				<div id="video">
+					<img height="200px" style="float: left; margin-right: 10px;" src="$video['thumbnails'][0]">
+					<h3>$video['title']</h3>
+					<p>$video['channel'] -- $video['publish_time']</p>
+					<br>
+					<p style="float: center;">$video['long_desc']</p>
+					
+					<h5 style="float: center;">$video['duration'] | $video['views'] views</h5>
+				</div>
+				</a>
+				<br><br>
+		
+		$elif typ == "news":
+			$for article in google:
+				<a href="$article['link']" target="_blank">
+				<div id="video">
+					<img height="200px" style="float: left; margin-right: 10px;" src="$article['img']">
+					<h3>$article['title']</h3>
+					<p>$article['media'] -- $article['date']</p>
+					<br>
+					<p style="float: center;">$article['desc']</p>
+				</div>
+				</a>
+				<br><br>
+		
+		$elif typ == "maps":
+			<script>
+			var x = document.getElementById("maps");
+
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} else { 
+				x.innerHTML = "Geolocation is not supported by this browser.";
+			}
+
+			function showPosition(position) {
+				var x = document.getElementById("maps");
+			$ q = q.replace(" ", "+")
+			x.innerHTML = `<div style="overflow:hidden;max-width:100%;width:500px;height:500px;"><div id="embeddedmap-canvas" style="height:100%; width:100%;max-width:100%;"><iframe style="height:100%;width:100%;border:0;" frameborder="0" src="https://www.google.com/maps/embed/v1/directions?origin=$${position.coords.latitude},$${position.coords.longitude}&destination=$q&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe></div><a class="googlemap-code-enabler" href="https://www.bootstrapskins.com/themes/wordpress" id="authmap-data">buy wordpress themes</a><style>#embeddedmap-canvas img{max-width:none!important;background:none!important;font-size: inherit;font-weight:inherit;}</style></div>`;
+			}
+			</script>
+			<p>SearchDeck only asks to access your current location because Google Maps requires an origin parameter. This location is not shared with anyone. 
+			<div id="maps">
+
+			</div>
+
 	</body>
+
 </html>
