@@ -134,3 +134,105 @@ def yahoo(q, que):
 			continue
 	#return results"""
 	que.put(results)
+
+def gshop(query, que):
+	query = query.replace(' ', '+')
+	URL = f"https://google.com/search?q={query}&tbm=shop"
+
+	# desktop user-agent
+	USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0"
+
+	headers = {"user-agent" : USER_AGENT}
+
+	resp = requests_session.get(URL, headers=headers)
+	print(resp.status_code)
+	if resp.status_code == 200:
+		#<h3 class="LC20lb DKV0Md">
+		result_div = SoupStrainer(id="search")
+		soup = BeautifulSoup(resp.text, "lxml", parse_only=result_div)
+		results = []
+		#print(soup.find_all('div', class_='g'))
+		for g in soup.find_all(class_ = 'sh-dlr__list-result'):
+			anchors = g.find_all('a')
+			if anchors:
+				try:
+					link = anchors[0]['href']
+					link = "https://google.com" + link
+				except:
+					link = "/"
+				title = g.find('h3')
+				title = str(title).split(">")
+				try:
+					title = title[1].split("<")[0]
+				except:
+					title = title[0]
+
+				rating = g.find("span")
+				rating = str(rating).split(">")
+				try:
+					rating = rating[1].split("<")[0]
+				except:
+					rating = rating[0]
+				
+
+				if title != "None":
+					item = {
+						"title": title,
+						"link": link,
+						"rating": rating
+					}
+					results.append(item)
+	else:
+		results = [{"title": "We're sorry, but Google returned a 429. Please try again later.", "link": "/"}]
+	
+	# return results
+	que.put(results)
+
+def bing_shopping(query, que):
+	query = query.replace(' ', '+')
+	URL = f"https://www.bing.com/shop?q={query}"
+	# desktop user-agent
+	USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+	print(URL)
+	headers = {"user-agent" : USER_AGENT}
+	resp = requests_session.get(URL, headers=headers)
+	print(resp.status_code)
+	if resp.status_code == 200:
+		soup = BeautifulSoup(resp.text, "lxml")
+		results = []
+		for g in soup.find_all('li', class_ = "br-item"):
+			anchors = g.find_all('a')
+			if anchors:
+				try:
+					link = anchors[1]['href']
+				except:
+					link = "/"
+
+				title = anchors[2]
+				title = title.find("div")
+				title = str(title).split(">")
+				try:
+					title = title[1].split("<")[0]
+				except:
+					title = title[0]
+
+				price = g.find("div", class_ = "pd-price")
+				price = str(price).split(">")
+				try:
+					price = price[1].split("<")[0]
+				except:
+					price = price[0]
+
+				if title != "None":
+					item = {
+						"title": title,
+						"link": link,
+						"price": price,
+						"img": g.find("img")['src']
+					}
+					results.append(item)
+	else:
+		results = [{"title": "We're sorry, but Bing returned a 429. Please try again later.", "link": "/"}]
+	
+	# return results
+	que.put(results)
