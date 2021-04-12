@@ -170,13 +170,11 @@ class search:
 					dictionary = word_dictionary(i.q)
 					info = infobox(i.q)
 					ans = ansbox(i.q)
-					print(type(info))
 					if "Yahoo" in engines and "Google" in engines and "DuckDuckGo" in engines and "Bing" in engines and logged_in:
 						try:
 							cache[session.get("user")][i.q] = {"google":goog, "bing":b, "yahoo":yhoo, "duckduckgo":duckduckgo,"last_updated":time.time()}
 						except:
 							pass
-				print(info)
 				print("--- %s seconds ---" % (time.time() - start_time))
 			elif i.q != "" and typ == "image":
 				query = i.q.replace(" ", "+")
@@ -202,21 +200,14 @@ class search:
 						imgs.append(link)
 				b = imgs
 				duckduckgo = requests.get(f"https://duckduckgo.com/?q={query}&ia=images", headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0'})
-				print(duckduckgo.content, file=open("ree.html", "a"))
 				soup = BeautifulSoup(duckduckgo.content, "html.parser")
 				images = soup.findAll('img')
-				print(images)
 				imgs = []
-				print()
 				for image in images:
-					print("reee")
 					image = str(image)
-					print(image)
 					link = image.split('src="')[-1].split('"')[0]
-					print(link)
 					imgs.append(link)
 				duckduckgo = imgs
-				print(duckduckgo)
 				yhoo = requests.get(f"https://images.search.yahoo.com/search/images;_ylt=A0geJaQetm1gPx0AGURXNyoA;_ylu=Y29sbwNiZjEEcG9zAzEEdnRpZAMEc2VjA3BpdnM-?p={query}&fr2=piv-web&fr=opensearch", headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0'}).content
 				soup = BeautifulSoup(yhoo, "html.parser")
 				images = soup.findAll('img')

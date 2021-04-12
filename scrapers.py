@@ -15,13 +15,11 @@ def google(query, que):
 	headers = {"user-agent" : USER_AGENT}
 
 	resp = requests_session.get(URL, headers=headers)
-	print(resp.status_code)
 	if resp.status_code == 200:
 		#<h3 class="LC20lb DKV0Md">
 		result_div = SoupStrainer(id="search")
 		soup = BeautifulSoup(resp.text, "lxml", parse_only=result_div)
 		results = []
-		#print(soup.find_all('div', class_='g'))
 		for g in soup.find_all('div', class_='g'):
 			anchors = g.find_all('a')
 			if anchors:
@@ -35,10 +33,12 @@ def google(query, que):
 					title = title[1].split("<")[0]
 				except:
 					title = title[0]
+				desc = str(g.find("span", class_ = "aCOpRe"))
 				if title != "None":
 					item = {
 						"title": title,
-						"link": link
+						"link": link,
+						"desc": desc
 					}
 					results.append(item)
 	else:
@@ -156,13 +156,11 @@ def gshop(query, que):
 	headers = {"user-agent" : USER_AGENT}
 
 	resp = requests_session.get(URL, headers=headers)
-	print(resp.status_code)
 	if resp.status_code == 200:
 		#<h3 class="LC20lb DKV0Md">
 		result_div = SoupStrainer(id="search")
 		soup = BeautifulSoup(resp.text, "lxml", parse_only=result_div)
 		results = []
-		#print(soup.find_all('div', class_='g'))
 		for g in soup.find_all(class_ = 'sh-dlr__list-result'):
 			anchors = g.find_all('a')
 			if anchors:
@@ -204,11 +202,8 @@ def bing_shopping(query, que):
 	URL = f"https://www.bing.com/shop?q={query}"
 	# desktop user-agent
 	USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-	print(URL)
 	headers = {"user-agent" : USER_AGENT}
 	resp = requests_session.get(URL, headers=headers)
-	print(resp.status_code)
-	print(resp.content)
 	if resp.status_code == 200:
 		soup = BeautifulSoup(resp.text, "lxml")
 		results = []
@@ -254,10 +249,8 @@ def yahoo_shopping(query, que):
 	URL = f"https://shopping.yahoo.com/search?p={query}"
 	# desktop user-agent
 	USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-	print(URL)
 	headers = {"user-agent" : USER_AGENT}
 	resp = requests_session.get(URL, headers=headers)
-	print(resp.status_code)
 	if resp.status_code == 200:
 		soup = BeautifulSoup(resp.text, "lxml")
 		results = []

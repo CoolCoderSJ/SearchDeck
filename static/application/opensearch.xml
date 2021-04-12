@@ -1,0 +1,12 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>SearchDeck</ShortName>
+  <Description>SearchDeck is a search engine that provides users with results from all of the major search engines all in one place so that you can find the best results.</Description>
+  <InputEncoding>[UTF-8]</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">https://searchdeck.coolcodersj.repl.co/static/images/favicon.png</Image>
+  <Url type="text/html" template="https://SearchDeck.coolcodersj.repl.co">
+    <Param name="q" value="{searchTerms}"/>
+  </Url>
+  <Url type="application/x-suggestions+json" template="https://searchdeck.coolcodersj.repl.co"/>
+  <moz:SearchForm>https://searchdeck.coolcodersj.repl.co</moz:SearchForm>
+</OpenSearchDescription>

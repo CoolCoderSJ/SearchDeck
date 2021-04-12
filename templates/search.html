@@ -2,6 +2,7 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 <!doctype html>
 <html>
 	<head>
+		<link rel="search" type="application/opensearchdescription+xml" title="SearchDeck" href="https://SearchDeck.coolcodersj.repl.co/static/application/opensearch.xml">
 	  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
 		<title>SearchDeck</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -195,19 +196,53 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 
 				</div>
 			$if info != []:
-				<div class="card">
+				<style>
+					#info:hover {
+						scale: 100% !important;
+					}
+				</style>
+				<div class="card" id="info" style="padding-bottom: 5px;">
 					$if info['Image']:
 						<img height="200px" src="https://duckduckgo.com/$info['Image']">
 					<h2>$info['Heading']</h2>
 					$:info['Abstract']
 					<br><hr>
 					$if info['Infobox'] != "":
+						<div id="infobox" style="transition: 0.2s; opacity: 0; display: none;">
 						$for topic in info['Infobox']['content']:
 							<p>$topic['label'] -- $topic['value']</p>
 							<hr>
+						</div>
 						<br><br>
 					<a href="$info['AbstractURL']">Read More On: $info['AbstractSource']</a>
+					$if info['Infobox'] != "":
+						<script>
+							function togglinfo() {
+								elem = document.getElementById("infobox")
+								elem2 = document.getElementById("oof")
+								elem3 = document.getElementById("oof2")
+								if (elem.style.opacity == '0') {
+									elem.style.display = 'block';
+									elem.style.opacity = '1';
+									elem2.innerHTML = "arrow_drop_up"
+									elem3.innerHTML = "Show Less"
+								}
+								else {
+									elem.style.display = 'none';
+									elem.style.opacity = '0'
+									elem2.innerHTML = "arrow_drop_down"
+									elem3.innerHTML = "Show More"
+								}
+							}
+						</script>
+						<br><br>
+						
+						<p style="float: left; padding-bottom: 20px !important;" onclick="togglinfo()" onmouseover="this.style.cursor = 'pointer'" id="oof2">Show More</p> <span id="oof" class="material-icons" style="float: left !important; margin-top: 7px;" onclick="togglinfo()">
+						arrow_drop_down
+						</span><br>
+						
 				</div>
+				<br><br>
 			$if ans != []:
 				<div class="card">
 					<h2>$ans['Answer']</h2>
@@ -235,6 +270,7 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 							<a href="$result['link']" target="_blank">
 							<div class="card">
 								<h3>$result['title']</h3>
+								<p>$:result['desc']</p>
 							</div>
 							</a>
 					</div>
@@ -313,7 +349,7 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 						<tr>
 							$if "Google" in engines:
 								$if len(google) > x:
-									<td><a href="$google[x]['link']" target="_blank"><div class="card smal"><h2>$google[x]['title']</h2></div></a></td>
+									<td><a href="$google[x]['link']" target="_blank"><div class="card smal"><h2>$google[x]['title']</h2><br><p>$:google[x]['desc']</p></div></a></td>
 								$else:
 									<td></td>
 							$if "Bing" in engines:
