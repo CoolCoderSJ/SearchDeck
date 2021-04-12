@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 #from ScrapeSearchEngine.ScrapeSearchEngine import Duckduckgo, Yahoo
-import cchardet, lxml
+import cchardet, lxml, time
 
 requests_session = requests.Session()
 
@@ -81,11 +81,12 @@ def ddg(q, que):
 
 	results = []
 	
-	for result in soup.findAll("h2",class_="result__title"):
+	for result in soup.findAll(class_="result__body"):
 		title = str(result.find('a'))
+		desc = str(result.find(class_ ="result__snippet"))
 		link = title.split('href="')[-1].split('"')[0]
 		title = title.split('">')[-1].split("</a>")[0]
-		results.append({"title": title, "link": link})
+		results.append({"title": title, "link": link, "desc": desc})
 
 	que.put(results)
 
@@ -116,12 +117,22 @@ def yahoo(q, que):
 	soup = BeautifulSoup(resp.text, "lxml", parse_only=result_div)
 
 	results = []
-
+	x = 0
+	descs = []
+	for result in soup.findAll(class_ = "compText"):
+		desc = str(result.find("p", class_ = "fz-ms"))
+		if desc != "None":
+			descs.append(desc)
 	for result in soup.findAll("h3",class_="title ov-h"):
 		title = str(result.find('a'))
 		link = title.split('href="')[-1].split('"')[0]
 		title = title.split('">')[-1].split("</a>")[0]
-		results.append({"title": title, "link": link})
+		try:
+			desc = descs[x]
+		except:
+			desc = "No Description."
+		results.append({"title": title, "link": link, "desc": desc})
+		x += 1
 	"""yahoo = Yahoo(q, "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0")
 	results = []
 	for link in yahoo:
@@ -197,6 +208,7 @@ def bing_shopping(query, que):
 	headers = {"user-agent" : USER_AGENT}
 	resp = requests_session.get(URL, headers=headers)
 	print(resp.status_code)
+	print(resp.content)
 	if resp.status_code == 200:
 		soup = BeautifulSoup(resp.text, "lxml")
 		results = []
@@ -236,3 +248,75 @@ def bing_shopping(query, que):
 	
 	# return results
 	que.put(results)
+
+def yahoo_shopping(query, que):
+	query = query.replace(' ', '+')
+	URL = f"https://shopping.yahoo.com/search?p={query}"
+	# desktop user-agent
+	USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+	print(URL)
+	headers = {"user-agent" : USER_AGENT}
+	resp = requests_session.get(URL, headers=headers)
+	print(resp.status_code)
+	if resp.status_code == 200:
+		soup = BeautifulSoup(resp.text, "lxml")
+		results = []
+		for g in soup.find_all('li', class_ = "fJNqPk"):
+			anchors = g.find_all('a')
+			if anchors:
+				try:
+					link = anchors[0]['href']
+					link = "https://yahoo.com" + link
+				except:
+					link = "/"
+
+				title = g.find("span", class_ = "FluidProductCell__Title-fsx0f7-9")
+				title = str(title).split(">")
+				try:
+					title = title[1].split("<")[0]
+				except:
+					title = title[0]
+
+				price = g.find("span", class_ = "FluidProductCell__PriceText-fsx0f7-10")
+				price = str(price).split(">")
+				try:
+					price = price[1].split("<")[0]
+				except:
+					price = price[0]
+
+				if title != "None":
+					item = {
+						"title": title,
+						"link": link,
+						"price": price
+					}
+					results.append(item)
+	else:
+		results = [{"title": "We're sorry, but Bing returned a 429. Please try again later.", "link": "/"}]
+	
+	# return results
+	que.put(results)
+
+def word_dictionary(word):
+	r = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en_US/{word}")
+	r = r.json()
+	if "title" in r and "message" in r and "resolution" in r:
+		return []
+	else:
+		return r
+
+def infobox(query):
+	r = requests.get(f"https://api.duckduckgo.com/?q={query}&format=json&pretty=1")
+	r = r.json()
+	if r['Abstract'] == "":
+		return []
+	else:
+		return r
+
+def ansbox(query):
+	r = requests.get(f"https://api.duckduckgo.com/?q={query}&format=json&pretty=1")
+	r = r.json()
+	if r['Answer'] == "":
+		return []
+	else:
+		return r

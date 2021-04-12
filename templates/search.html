@@ -1,9 +1,10 @@
-$def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
+$def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, dictionary, info, ans)
 <!doctype html>
 <html>
 	<head>
 	  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
 		<title>SearchDeck</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="theme-color" content="#000EF2">
 <meta content="Search Results for $q | SearchDeck" property="og:title">
 <meta name="og:site_name" content="">
@@ -15,6 +16,8 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 <link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
 		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
 			<link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"  rel="stylesheet">
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"  rel="stylesheet">
 			<div class="topnav text">
 		<a class="brand" href="/">SearchDeck</a>
 		<div class="topnavitem">
@@ -103,7 +106,6 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 					window.location.href = url
 				};
 			</script>
-			<h2>SearchDeck</h2><br>
 			<form method="get" action="/" id="search">
 			<div>
 				<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px" onclick="document.getElementById('search').submit()">
@@ -132,7 +134,10 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 			<span class="material-icons" style="float: left;" onclick="typ('maps')">
 			location_on
 			</span>
-			<span class="material-icons"  onclick="sort('table')">
+			<span class="material-icons"  style="float: left;" onclick="typ('shopping')">
+			shopping_cart
+			</span>
+			<span class="material-icons-round"  onclick="sort('table')" style="float: right;">
 			grid_view
 			</span>
 					<span class="material-icons" onclick="sort('list')">
@@ -143,6 +148,72 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 	<body style="overflow: auto !important;">
 		<br><br>
 		$if typ == 'text':
+			$if dictionary != []:
+				<script>
+					function atoggle() {
+					control = document.getElementById("audioControl")
+					a = document.getElementById("recording")
+					console.log(control.innerHTML)
+					if (control.innerHTML == "play_circle") {
+						a.play();
+						console.log("Playing")
+						control.innerHTML = "pause";
+					}
+					else if (control.innerHTML == "pause") {
+						a.pause();
+						control.innerHTML = "play_circle";
+					}
+					}
+				</script>
+				$ dictionary = dictionary[0]
+				<div class="card" style="width: 100% !important; scale: 100% !important;">
+					<h2>$dictionary['word']</h2><br>
+					$for phonetic in dictionary['phonetics']:
+						<p style="float: left;">$phonetic['text']</p>
+						 <audio style="float: left; margin-left: 5px;" id="recording">
+							<source src="$phonetic['audio']" type="audio/mp3">
+							Your browser does not support the audio element.
+						</audio> 
+						<span class="material-icons" id="audioControl" style="float: left; margin-left: 5px; margin-top: 9px;" onclick="atoggle()">play_circle</span>
+						
+					<br><br>
+					$for meaning in dictionary['meanings']:
+						<h3>$meaning['partOfSpeech']</h3>
+						$ count = 1
+						$for definitions in meaning['definitions']:
+						<br>
+							<p>$count - $definitions['definition']</p>
+							$ count = count + 1
+							$if "example" in definitions:
+								<p style="color: #ccc;"><i>$definitions['example']</i></p>
+							$if "synonyms" in definitions:
+								$ synonym = ""
+								$for synon in definitions['synonyms']:
+									<a href="https://SearchDeck.coolcodersj.repl.co?q=$synon"><p style="float: left; margin-right: 1px; scale: 95%; padding: 5px; border-radius: 6px; border: 1px solid #ccc;">$synon</p></a>
+								<br><br>
+						<br><br>
+
+				</div>
+			$if info != []:
+				<div class="card">
+					$if info['Image']:
+						<img height="200px" src="https://duckduckgo.com/$info['Image']">
+					<h2>$info['Heading']</h2>
+					$:info['Abstract']
+					<br><hr>
+					$if info['Infobox'] != "":
+						$for topic in info['Infobox']['content']:
+							<p>$topic['label'] -- $topic['value']</p>
+							<hr>
+						<br><br>
+					<a href="$info['AbstractURL']">Read More On: $info['AbstractSource']</a>
+				</div>
+			$if ans != []:
+				<div class="card">
+					<h2>$ans['Answer']</h2>
+					<p>$ans['AnswerType']</p>
+				</div>
+				<br><br>
 			$if sort =="list":
 				<ul>
 					$if "Google" in engines:
@@ -187,6 +258,7 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 							<a href="$result['link']" target="_blank">
 							<div class="card">
 								<h3>$result['title']</h3>
+								<p>$:result['desc']</p>
 							</div>
 							</a>
 					</div>
@@ -198,12 +270,32 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 							<a href="$result['link']" target="_blank">
 							<div class="card">
 								<h3>$result['title']</h3>
+								<p>$:result['desc']</p>
 							</div>
 							</a>
 					</div>
 				</div>
 			$else:
 				<table class="text">
+					<style>
+						td, th {
+							width: 300px;
+						}
+						.smal {
+							height: 100%;
+							width: 300px !important;
+							transition: 0.5s;
+							scale: 80% !important;
+						}
+						.smal:hover {
+							transition: 0.5s;
+							scale: 95% !important;
+						}
+						td, th, table, tr {
+							border: none;
+							background: none !important;
+						}
+					</style>
 					<tr>
 						$if "Google" in engines:
 							<th>Google</th>
@@ -221,22 +313,22 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 						<tr>
 							$if "Google" in engines:
 								$if len(google) > x:
-									<td><a href="$google[x]['link']" target="_blank">$google[x]['title']</a></td>
+									<td><a href="$google[x]['link']" target="_blank"><div class="card smal"><h2>$google[x]['title']</h2></div></a></td>
 								$else:
 									<td></td>
 							$if "Bing" in engines:
 								$if len(bing) > x:
-									<td><a href="$bing[x]['link']" target="_blank">$bing[x]['title']</a></td>
+									<td><a href="$bing[x]['link']" target="_blank"><div class="card smal"><h2>$bing[x]['title']</h2><br><p>$:bing[x]['desc']</p></div></a></td>
 								$else:
 									<td></td>
 							$if "DuckDuckGo" in engines:
 								$if len(duckduckgo) > x:
-									<td><a href="$duckduckgo[x]['link']" target="_blank">$duckduckgo[x]['title']</a></td>
+									<td><a href="$duckduckgo[x]['link']" target="_blank"><div class="card smal"><h2>$duckduckgo[x]['title']</h2><br><p>$:duckduckgo[x]['desc']</p></div></a></td>
 								$else:
 									<td></td>
 							$if "Yahoo" in engines:
 								$if len(yahoo) > x:
-									<td><a href="$yahoo[x]['link']" target="_blank">$yahoo[x]['title']</a></td>
+									<td><a href="$yahoo[x]['link']" target="_blank"><div class="card smal"><h2>$yahoo[x]['title']</h2><br><p>$:yahoo[x]['desc']</p></div></a></td>
 								$else:
 									<td></td>
 						</tr>
@@ -362,6 +454,115 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in)
 
 			</div>
 
+		$elif typ == 'shopping':
+			$if sort =="list":
+				<ul>
+					$if "Google" in engines:
+						<li><a href="#google">Google</a></li>
+					$if "Bing" in engines:
+						<li><a href="#bing">Bing</a></li>
+					$if "Yahoo" in engines:
+						<li><a href="#yahoo">Yahoo</a></li>
+				</ul>
+				<br><br><br>
+				<div id='containter'>
+				$if "Google" in engines:
+					<div id="google">
+						<h2>Google</h2>
+						<br><br>
+						$for result in google:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+							</div>
+							</a>
+					</div>
+				$if "Bing" in engines:
+					<div id="bing">
+						<h2>Bing</h2>
+						<br><br>
+						$for result in bing:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+								<p>$result['desc']</p>
+							</div>
+							</a>
+					</div>
+				$if "Yahoo" in engines:
+					<div id="yahoo">
+						<h2>Yahoo</h2>
+						<br><br>
+						$for result in yahoo:
+							<a href="$result['link']" target="_blank">
+							<div class="card">
+								<h3>$result['title']</h3>
+							</div>
+							</a>
+					</div>
+				</div>
+			$else:
+				<style>
+					td {
+						height: 100%;
+						width: 100%;
+					}
+					.card {
+						width: 80% !important;
+					}
+					</style>
+				<table class="text">
+					<tr>
+						$if "Google" in engines:
+							<th>Google</th>
+						$if "Bing" in engines:
+							<th>Bing</th>
+						$if "Yahoo" in engines:
+							<th>Yahoo</th>
+					</tr>
+					$ lis = [len(google), len(bing), len(duckduckgo), len(yahoo)] 
+					$lis.sort()
+					$ num = lis[-1]
+					$for x in range(num):
+						<tr>
+							$if "Google" in engines:
+								$if len(google) > x:
+									<td><a href="$google[x]['link']" target="_blank">
+										<div class="card">
+										<img height="200px" style="float: left; margin-right: 10px;" src="">
+										<h3>$google[x]['title']</h3>
+										<br>
+										<p style="float: center;">$google[x]['rating'] Rating</p>			
+										</div>
+									</a></td>
+								$else:
+									<td></td>
+							$if "Bing" in engines:
+								$if len(bing) > x:
+									<td><a href="$bing[x]['link']" target="_blank">
+										<div class="card">
+										<img height="200px" style="float: left; margin-right: 10px;" src="$bing[x]['img']">
+										<h3>$bing[x]['title']</h3>
+										<br>
+										<p style="float: center;">$bing[x]['price']</p>			
+										</div>
+										</a></td>
+								$else:
+									<td></td>
+							$if "Yahoo" in engines:
+								$if len(yahoo) > x:
+									<td><a href="$yahoo[x]['link']" target="_blank">
+										<div class="card">
+										<img height="200px" style="float: left; margin-right: 10px;" src="">
+										<h3>$yahoo[x]['title']</h3>
+										<br>
+										<p style="float: center;">$yahoo[x]['price']</p>			
+										</div>
+										</a></td>
+								$else:
+									<td></td>
+						</tr>
+				</table>
 	</body>
 
 </html>

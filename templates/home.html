@@ -6,6 +6,7 @@ $def with (logged_in, settings)
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
 		<title>SearchDeck</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="theme-color" content="#000EF2">
 <meta content="SearchDeck" property="og:title">
 <meta name="og:site_name" content="SearchDeck">
@@ -108,6 +109,10 @@ $def with (logged_in, settings)
 			<input type="radio" value="maps" name="typ">
 			<span class="radio"></span>
 			</label>
+			<label class="container">Shopping
+			<input type="radio" value="shopping" name="typ">
+			<span class="radio"></span>
+			</label>
 		$elif settings['default_typ'] == "image":
 			<label class="container">Text
 			<input type="radio" value="text" name="typ">
@@ -127,6 +132,10 @@ $def with (logged_in, settings)
 			</label>
 			<label class="container">Maps
 			<input type="radio" value="maps" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Shopping
+			<input type="radio" value="shopping" name="typ">
 			<span class="radio"></span>
 			</label>
 		$elif settings['default_typ'] == "video":
@@ -150,6 +159,10 @@ $def with (logged_in, settings)
 			<input type="radio" value="maps" name="typ">
 			<span class="radio"></span>
 			</label>
+			<label class="container">Shopping
+			<input type="radio" value="shopping" name="typ">
+			<span class="radio"></span>
+			</label>
 		$elif settings['default_typ'] == "news":
 			<label class="container">Text
 			<input type="radio" value="text" name="typ">
@@ -171,6 +184,10 @@ $def with (logged_in, settings)
 			<input type="radio" value="maps" name="typ">
 			<span class="radio"></span>
 			</label>
+			<label class="container">Shopping
+			<input type="radio" value="shopping" name="typ">
+			<span class="radio"></span>
+			</label>
 		$elif settings['default_typ'] == "maps":
 			<label class="container">Text
 			<input type="radio" value="text" name="typ">
@@ -190,6 +207,35 @@ $def with (logged_in, settings)
 			</label>
 			<label class="container">Maps
 			<input type="radio" value="maps" checked="checked" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Shopping
+			<input type="radio" value="shopping" name="typ">
+			<span class="radio"></span>
+			</label>
+		$elif settings['default_typ'] == "shopping":
+			<label class="container">Text
+			<input type="radio" value="text" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Images
+			<input type="radio" value="image" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Video
+			<input type="radio" value="video" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">News
+			<input type="radio" value="news" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Maps
+			<input type="radio" value="maps" name="typ">
+			<span class="radio"></span>
+			</label>
+			<label class="container">Shopping
+			<input type="radio" value="shopping" checked="checked" name="typ">
 			<span class="radio"></span>
 			</label>
 		
