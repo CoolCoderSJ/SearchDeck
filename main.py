@@ -23,6 +23,10 @@ app = web.application(urls, globals())
 render = web.template.render("templates")
 session = web.session.Session(app, web.session.DiskStore('sessions'))
 
+class supersecretstylesheet:
+	def GET(self):
+		web.header("Content-Type", "text/css")
+		return open("templates/style.css", "rb").read()
 
 cache = {}
 
@@ -37,17 +41,32 @@ class settings:
 		return render.settings(db[session.get("user")])
 	def POST(self):
 		i = web.input()
-		engines = []
-		sort = i.sort
-		typ = i.typ
+		engines = {
+            "Google": "",
+            "Bing": "",
+            "Yahoo": "",
+            "DuckDuckGo": ""
+        }
+		sort = None
+		selected_typ = i.typ
+		typ = {
+            "text": "",
+            "image": "",
+            "video": "",
+            "news": "",
+            "maps": "",
+            "shopping": ""
+        }
+		typ[selected_typ] = "checked"
+        
 		if "Google" in i:
-			engines.append("Google")
+			engines["Google"] = 'checked'
 		if "Bing" in i:
-			engines.append("Bing")
+			engines["Bing"] = 'checked'
 		if "DuckDuckGo" in i:
-			engines.append("DuckDuckGo")
+			engines["DuckDuckGo"] = 'checked'
 		if "Yahoo" in i:
-			engines.append("Yahoo")
+			engines["Yahoo"] = 'checked'
 
 		if "cache" in i:
 			cache = "Enabled"
@@ -56,7 +75,7 @@ class settings:
 
 		db[session.get("user")] = {
 			"theme": "dark",
-			"engines": f"{engines}",
+			"engines": engines,
 			"default_sort": sort,
 			"default_typ": typ,
 			"cache": cache
@@ -72,30 +91,32 @@ class search:
 		i = web.input(q="", sort="table", typ="text")
 		if i.q == "":
 			if logged_in:
-				try:
-					engines = literal_eval(db[session.get("user")]['engines'])
-				except:
-					engines = db[session.get("user")]['engines']
-			else:
-				engines = ['Google', 'Bing', 'DuckDuckGo', 'Yahoo']
-			if logged_in:
 				stin = db[session.get("user")]
 			else:
 				stin = {
-					"engines": "['Google', 'Bing', 'DuckDuckGo', 'Yahoo']",
-					"default_typ": "text"
+					"engines": {
+                    "Google": "checked",
+                    "Bing": "checked",
+                    "DuckDuckGo": "checked",
+                    "Yahoo": "checked"
+                    },
+					"default_typ": {
+                        "text": "checked",
+                        "image": "",
+                        "video": "",
+                        "news": "",
+                        "maps": "",
+                        "shopping": ""
+                    }
 				}
 			return render.home(logged_in, stin)
 		
 		else:
 			r = requests.get("http://httpbin.org/ip")
-			print(r.json()['origin'])
 			global cache
 			#clear cache if cache is too big
 			if len(cache) > 25:
 				cache = {}
-			for user in db:
-				print(user)
 			engines = []
 			sort = i.sort
 			typ = i.typ
@@ -110,7 +131,7 @@ class search:
 
 			if "Google" not in i and "Bing" not in i and "DuckDuckGo" not in i and "Yahoo" not in i:
 				if logged_in:
-					engines = literal_eval(db[session.get("user")]['engines'])
+					engines = db[session.get("user")]['engines']
 				else:
 					engines = ['Google', 'Bing', 'DuckDuckGo', 'Yahoo']
 
@@ -132,7 +153,6 @@ class search:
 						use_cache = True
 				except:
 					pass
-				print(use_cache)
 				if use_cache:
 					goog = cache[session.get("user")][i.q]["google"]
 					b = cache[session.get("user")][i.q]["bing"]
@@ -175,7 +195,93 @@ class search:
 							cache[session.get("user")][i.q] = {"google":goog, "bing":b, "yahoo":yhoo, "duckduckgo":duckduckgo,"last_updated":time.time()}
 						except:
 							pass
+				data = []
+				e = []
+				f = []
+				for g in goog:
+					g['engine'] = "Google"
+					e.append(g)
+					f.append(g['title'])
+
+				for bingresult in b:
+					bingresult['engine'] = "Bing"
+					e.append(bingresult)
+					f.append(bingresult['title'])
+				
+				for d in duckduckgo:
+					d['engine'] = "DuckDuckGo"
+					e.append(d)
+					f.append(d['title'])
+
+				for y in yhoo:
+					y['engine'] = 'Yahoo'
+					e.append(y)
+					f.append(y['title'])
+
+				def getnum(s0, s1):
+					s0 = s0.lower()
+					s1 = s1.lower()
+					s0List = s0.split(" ")
+					s1List = s1.split(" ")
+					num = len(list(set(s0List)&set(s1List)))
+					return round(num/len(s0List)*100)
+
+				g = set(f)
+				counter = 0
+				so = []
+				for item in e:
+					if "stackoverflow.com" in item['link']:
+						thing = ""
+						for x in so:
+							if getnum(x[0]['title'], item['title']) >= 90:
+								thing = x
+								break
+						if thing:
+							so.remove(thing)
+							engines = x[1]
+							engines.append(item['engine'])
+							x = [x[0], engines]
+							so.append(x)
+						else:
+							engines = [item['engine']]
+							x = [item, engines]
+							so.append(x)
+					else:
+						thing = ""
+						for x in data:
+							if getnum(x[0]['title'], item['title']) >= 90:
+								thing = x
+								break
+						if thing:
+							data.remove(thing)
+							engines = x[1]
+							engines.append(item['engine'])
+							x = [x[0], engines, x[2]]
+							data.append(x)
+						else:
+							engines = [item['engine']]
+							x = [item, engines, counter]
+							data.append(x)
+						counter += 1
+				
+				done = 0
+				data2 = []
+				for item in data:
+					if done == len(data):
+						break
+					if data.index(item) != item[2]:
+						data.insert(item[2], data.pop(data.index(item)))
+						done += 1
+				data2, data = data, data2
+
+				for item in so:
+					data.append(item)
+				
+				for item in data2:
+					data.append(item)
+
 				print("--- %s seconds ---" % (time.time() - start_time))
+				return render.text(data, i.q, dictionary, info, ans, logged_in)
 			elif i.q != "" and typ == "image":
 				query = i.q.replace(" ", "+")
 				goog = requests.get(f"https://google.com/search?q={query}&tbm=isch", headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0'}).content
@@ -229,7 +335,7 @@ class search:
 				news.set_encode('utf-8')
 
 				news.search(query)
-
+				
 				goog = news.results()
 				b, duckduckgo, yhoo = [], [], []
 			elif i.q != "" and typ == "maps":
@@ -300,7 +406,20 @@ class login:
 		if r.text == "True":
 			session.user = i.user
 			if i.user not in db:
-				db[i.user] = {"theme": "dark", "engines": "['Google', 'Bing', 'DuckDuckGo', 'Yahoo']", "default_typ": "text", "default_sort": "table", "cache": "Enabled"}
+				db[i.user] = {"theme": "dark", "engines": {
+                    "Google": "checked",
+                    "Bing": "checked",
+                    "DuckDuckGo": "checked",
+                    "Yahoo": "checked"
+                    },
+					"default_typ": {
+                        "text": "checked",
+                        "image": "",
+                        "video": "",
+                        "news": "",
+                        "maps": "",
+                        "shopping": ""
+                    }, "default_sort": "table", "cache": "Enabled"}
 			raise web.seeother("/")
 		else:
 			raise web.seeother("/login?code=1")
@@ -323,7 +442,20 @@ class signup:
 		if r.text == "True":
 			session.user = i.user
 			if i.user not in db:
-				db[i.user] = {"theme": "dark", "engines": "['Google', 'Bing', 'DuckDuckGo', 'Yahoo']", "default_typ": "text", "default_sort": "table", "cache": "Enabled"}
+				db[i.user] = {"theme": "dark", "engines": {
+                    "Google": "checked",
+                    "Bing": "checked",
+                    "DuckDuckGo": "checked",
+                    "Yahoo": "checked"
+                    },
+					"default_typ": {
+                        "text": "checked",
+                        "image": "",
+                        "video": "",
+                        "news": "",
+                        "maps": "",
+                        "shopping": ""
+                    }, "default_sort": "table", "cache": "Enabled"}
 			raise web.seeother("/")
 		else:
 			raise web.seeother("/signup?code=1")

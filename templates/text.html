@@ -1,0 +1,198 @@
+$def with (data, q, dict, info, ans, logged_in)
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="search" type="application/opensearchdescription+xml" title="SearchDeck" href="https://SearchDeck.coolcodersj.repl.co/static/application/opensearch.xml">
+	  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+		<title>SearchDeck</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="theme-color" content="#1a2032">
+<meta content="Search Results for $q | SearchDeck" property="og:title">
+<meta name="og:site_name" content="">
+<meta name="twitter:title" content="Search Results for $q | SearchDeck">
+<meta name="twitter:description" content="This is search, done right.">
+<meta name="twitter:image" content="">
+<meta name="og:image" content="">
+<meta content="This is search, done right." property="og:description">
+<link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
+    <link href="/static/style.css?v1" rel="stylesheet" type="text/css" />
+	<link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	  <script>
+
+				function sort(style) {
+					console.log("ree")
+					var q = document.getElementById("q").value;
+					engines = document.getElementsByClassName("engine");
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}`;
+					var i;
+					for (i=0; i < engines.length; i++) {
+						a = engines[i].value;
+						b = engines[i].name;
+						console.log(a)
+						console.log(b)
+						url += `&$${b}=$${a}`;
+					};
+					window.location.href = url
+				};
+				function typ(type) {
+					var q = document.getElementById("q").value;
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&typ=$${type}`;
+					engines = document.getElementsByClassName("engine");
+					var i;
+					for (i=0; i < engines.length; i++) {
+						a = engines[i].value
+						b = engines[i].name
+						url += `&$${b}=$${a}`
+					};
+					window.location.href = url
+				};
+			</script>
+      <div class="topnav text" style="margin-bottom: 0;">
+		<a class="brand" href="/">SearchDeck</a>
+		<div class="topnavitem">
+			$if logged_in == False:
+    			<a class="topnavitem active" href="/login">Login</a>
+  				<a class="topnavitem" href="/signup">Signup</a>
+		</div>
+    <span class="material-icons" style="margin-right: 30px;padding-top: 14px; margin-left: 15px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
+	settings
+	</span>
+		</div> 
+		</div> 
+	  
+      
+	  <nav style="top: 0; position: sticky; background: var(--bg-14); padding: 25px; z-index:10;">
+		  <div class="search">
+			  
+			  <form method="get" action="/" id="search" style="width: 90%;">
+			  <div style="display: flex;">
+            <input class="input" name="q" value="$q" id="q" placeholder="Search Anything...." style="width: 50%;">
+            <span class="material-icons" style="background: var(--bg-13); height: 22px; border-radius: 0 8px 8px 0; padding: 10px; cursor: pointer; margin-left: -44px;" onclick="document.getElementById('search').submit()">
+                search
+            </span>  
+		</div>
+
+			<style>
+				h2 {
+  text-align: left;
+}
+			</style>
+		  </div>
+		  <br>
+		  <div class="nav-bottom" style="display: flex; gap: 15px;">
+		  <a href="#" onclick="typ('text')" class="active">All</a>
+		  <a href="#" onclick="typ('image')" class="notactive">Images</a>
+		  <a href="#" onclick="typ('video')" class="notactive">Video</a>
+		  <a href="#" onclick="typ('news')" class="notactive">News</a>
+		  <a href="#" onclick="typ('maps')" class="notactive">Maps</a>
+		  <a href="#" onclick="typ('shopping')" class="notactive">Shopping</a>
+		  </div>
+          <div style="border: 1px solid var(--bg-12);margin-top: 20px;"></div>
+	  </nav>
+	  <br>
+	$if dict != []:
+		<script>
+			function atoggle(elem, label) {
+			control = label
+			a = elem
+			console.log(control.innerHTML)
+			if (control.getAttribute("class") == "fas fa-play-circle") {
+				a.play();
+				console.log("Playing")
+				control.setAttribute("class", "fas fa-pause-circle");
+			}
+			else if (control.getAttribute("class") == "fas fa-pause-circle") {
+				a.pause();
+				control.setAttribute("class", "fas fa-play-circle");
+			}
+			}
+		</script>
+		$ dictionary = dict[0]
+		<div class="card special">
+			<h2 class="title">$dictionary['word']</h2>
+			<div class="display: flex;">
+			$for phonetic in dictionary['phonetics']:
+				$ id = dictionary['phonetics'].index(phonetic)
+				$if "text" in phonetic:
+					<p style="margin-left: 20px;">$phonetic['text'] <i class="fas fa-play-circle" onclick="atoggle(document.getElementById('$id'), this)"></i></p>
+						<audio style="display: hidden;" id="$id">
+						<source src="$phonetic['audio']" type="audio/mp3">
+						Your browser does not support the audio element.
+					</audio> 
+			</div>
+			<br>
+			$for meaning in dictionary['meanings']:
+				<h4>$meaning['partOfSpeech'].title()</h4>
+				$ count = 1
+				$for definitions in meaning['definitions']:
+					<h5 class="def">$count - $definitions['definition']</h5>
+					$ count = count + 1
+					$if "example" in definitions:
+						<h5 class="example">$definitions['example']</h5>
+					$if "synonyms" in definitions:
+						<div class="synonym-container">
+						$ synonym = ""
+						$for synon in definitions['synonyms']:
+							<a href="https://SearchDeck.coolcodersj.repl.co?q=$synon" class="synonym">$synon</a>
+						</div>
+					<br>
+		</div>
+	<style>
+		.card:hover {
+			cursor: pointer;
+		}
+	</style>
+	$if info != []:
+		<div class="card" id="info">
+			$if info['Image']:
+				<img height="200px" src="https://duckduckgo.com/$info['Image']">
+			<h3>$info['Heading']</h3>
+			$:info['Abstract']
+			<hr>
+			$if info['Infobox'] != "":
+				<div id="infobox" style="transition: 0.2s; opacity: 0; display: none;">
+				$for topic in info['Infobox']['content']:
+					$if "label" in topic:
+						<p>$topic['label'] -- $topic['value']</p>
+					<hr>
+				</div>
+				<br><br>
+			<a href="$info['AbstractURL']">Read More On: $info['AbstractSource']</a>
+			$if info['Infobox'] != "":
+				<script>
+					function togglinfo() {
+						elem = document.getElementById("infobox")
+						elem3 = document.getElementById("oof2")
+						if (elem.style.opacity == '0') {
+							elem.style.display = 'block';
+							elem.style.opacity = '1';
+							elem3.innerHTML = "Show Less"
+						}
+						else {
+							elem.style.display = 'none';
+							elem.style.opacity = '0'
+							elem3.innerHTML = "Show More"
+						}
+					}
+				</script>
+				<br><br>
+				
+				<p style="float: left; padding-bottom: 20px !important;" onclick="togglinfo()" onmouseover="this.style.cursor = 'pointer'" id="oof2">Show More</p> 
+				
+		</div>
+	$for result in data:	
+		$ url = result[0]['link']
+		<div class="card" onclick="window.open('$url')">
+			<h3 class="title">$result[0]['title']</h3>
+			<a href="" target="_blank" class="url">$result[0]['link']</a>
+			<h5 class="desc">$:result[0]['desc']</h5>
+			<br>
+			<p style="color: #ccc">Found on: $", ".join(result[1])</p>
+		</div>
+	  <br><br><br>
+  </body>
+</html>

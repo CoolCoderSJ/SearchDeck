@@ -6,76 +6,32 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 	  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
 		<title>SearchDeck</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="theme-color" content="#000EF2">
+		<meta name="theme-color" content="#1a2032">
 <meta content="Search Results for $q | SearchDeck" property="og:title">
 <meta name="og:site_name" content="">
 <meta name="twitter:title" content="Search Results for $q | SearchDeck">
-<meta name="twitter:description" content="Search the Web! Search 4 different search engines at once and see the results side-by-side.">
+<meta name="twitter:description" content="This is search, done right.">
 <meta name="twitter:image" content="">
 <meta name="og:image" content="">
-<meta content="Search the Web! Search 4 different search engines at once and see the results side-by-side." property="og:description">
+<meta content="This is search, done right." property="og:description">
 <link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
-		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
+		<link href="static/style.css" rel="stylesheet" type="text/css" />
 			<link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
 			<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"  rel="stylesheet">
 			<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"  rel="stylesheet">
-			<div class="topnav text">
+			<div class="topnav text" style="margin-bottom: 0;">
 		<a class="brand" href="/">SearchDeck</a>
 		<div class="topnavitem">
-			$if not logged_in:
+			$if logged_in == False:
     			<a class="topnavitem active" href="/login">Login</a>
   				<a class="topnavitem" href="/signup">Signup</a>
-		<span class="material-icons" style="float: right; margin-top: 10px; margin-right: 30px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
-				settings
-			</span>
 		</div>
+    <span class="material-icons" style="margin-right: 30px;padding-top: 14px; margin-left: 15px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
+	settings
+	</span>
 		</div> 
-			<style type="text/css">
-			a {
-				text-decoration: none;
-			}
-			.card:hover {
-				transition: 0.5s;
-				width: 50%;
-			}
-			.page {
-				width: 100%;
-				height: 100%;
-			}
-
-			#container {
-				display: inline-flex; 
-				flex-direction: column;
-			}
-
-			.material-icons {
-				float: right;
-				border-radius: 6px;
-				padding: 5px;
-			}
-			.material-icons:hover {
-				cursor: pointer;
-				background: #595959;
-			}
-				#video, .card {
-					background: #16191d !important;
-					padding-bottom: 40px !important;
-					padding-left: 20px !important;
-					padding-right: 10px !important; 
-					padding-top: 20px !important;
-					border: none !important;
-					border-radius: 8px !important;
-					width: 100% !important;
-					height: 100% !important;
-					transition: 0.5s !important;
-					scale: 100% !important;
-				}
-				#video:hover, .card:hover {
-					transition: 0.5s !important;
-					scale: 110% !important;
-				}
-			</style>
-
+		</div> 
+			
 			<script>
 
 				function sort(style) {
@@ -95,8 +51,7 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 				};
 				function typ(type) {
 					var q = document.getElementById("q").value;
-					var style = document.getElementsByName("sort")[0].value;
-					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}&typ=$${type}`;
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&typ=$${type}`;
 					engines = document.getElementsByClassName("engine");
 					var i;
 					for (i=0; i < engines.length; i++) {
@@ -107,318 +62,40 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 					window.location.href = url
 				};
 			</script>
-			<form method="get" action="/" id="search">
-			<div>
-				<span class="material-icons" style="float: right; background: #161f27; padding: 5px; height: 22px" onclick="document.getElementById('search').submit()">
-					search
-				</span>
-			<input class="input" id="q" name="q" placeholder="Search Anything...." value="$q" style="width: 97%">
-			<input type="hidden" value="$sort" name="sort">
-			<input type="hidden" value="$typ" name="typ">
-			$for engine in engines:
-				<input type="hidden" value="on" class="engine" name="$engine">
-			</div>
-			</form>
-			<br><br>
-			<span class="material-icons" style="float: left;" onclick="typ('text')">
-			article
-			</span>
-			<span class="material-icons" style="float: left;" onclick="typ('image')">
-			image
-			</span>
-			<span class="material-icons" style="float: left;" onclick="typ('video')">
-			smart_display
-			</span>
-			<span class="material-icons" style="float: left;" onclick="typ('news')">
-			feed
-			</span>
-			<span class="material-icons" style="float: left;" onclick="typ('maps')">
-			location_on
-			</span>
-			<span class="material-icons"  style="float: left;" onclick="typ('shopping')">
-			shopping_cart
-			</span>
-			<span class="material-icons-round"  onclick="sort('table')" style="float: right;">
-			grid_view
-			</span>
-					<span class="material-icons" onclick="sort('list')">
-			list
-			</span>
+			 <nav style="top: 0; position: sticky; background: var(--bg-14); padding: 25px; z-index:10;">
+		  <div class="search">
+			  
+			  <form method="get" action="/" id="search" style="width: 90%;">
+			  <div style="display: flex;">
+            <input class="input" name="q" value="$q" id="q" placeholder="Search Anything...." style="width: 50%;">
+            <span class="material-icons" style="background: var(--bg-13); height: 22px; border-radius: 0 8px 8px 0; padding: 10px; cursor: pointer; margin-left: -44px;" onclick="document.getElementById('search').submit()">
+                search
+            </span>  
+		</div>
+
+			<style>
+				h2 {
+  text-align: left;
+}
+			</style>
+		  </div>
+		  <br>
+		  <div class="nav-bottom" style="display: flex; gap: 15px;">
+			  $ listOfClass = {"text": "notactive", "image": "notactive", "video": "notactive", "news": "notactive", "maps": "notactive", "shopping": "notactive"}
+			  $ listOfClass[typ] = "active"
+		  <a href="#" onclick="typ('text')" class="$listOfClass['text']">All</a>
+		  <a href="#" onclick="typ('image')" class="$listOfClass['image']">Images</a>
+		  <a href="#" onclick="typ('video')" class="$listOfClass['video']">Video</a>
+		  <a href="#" onclick="typ('news')" class="$listOfClass['news']">News</a>
+		  <a href="#" onclick="typ('maps')" class="$listOfClass['maps']">Maps</a>
+		  <a href="#" onclick="typ('shopping')" class="$listOfClass['shopping']">Shopping</a>
+		  </div>
+          <div style="border: 1px solid var(--bg-12);margin-top: 20px;"></div>
+	  </nav>
 			<br><br>
 	</head>
 	<body style="overflow: auto !important;">
-		<br><br>
-		$if typ == 'text':
-			$if dictionary != []:
-				<script>
-					function atoggle() {
-					control = document.getElementById("audioControl")
-					a = document.getElementById("recording")
-					console.log(control.innerHTML)
-					if (control.innerHTML == "play_circle") {
-						a.play();
-						console.log("Playing")
-						control.innerHTML = "pause";
-					}
-					else if (control.innerHTML == "pause") {
-						a.pause();
-						control.innerHTML = "play_circle";
-					}
-					}
-				</script>
-				$ dictionary = dictionary[0]
-				<div class="card" style="width: 100% !important; scale: 100% !important;">
-					<h2>$dictionary['word']</h2><br>
-					$for phonetic in dictionary['phonetics']:
-						<p style="float: left;">$phonetic['text']</p>
-						 <audio style="float: left; margin-left: 5px;" id="recording">
-							<source src="$phonetic['audio']" type="audio/mp3">
-							Your browser does not support the audio element.
-						</audio> 
-						<span class="material-icons" id="audioControl" style="float: left; margin-left: 5px; margin-top: 9px;" onclick="atoggle()">play_circle</span>
-						
-					<br><br>
-					$for meaning in dictionary['meanings']:
-						<h3>$meaning['partOfSpeech']</h3>
-						$ count = 1
-						$for definitions in meaning['definitions']:
-						<br>
-							<p>$count - $definitions['definition']</p>
-							$ count = count + 1
-							$if "example" in definitions:
-								<p style="color: #ccc;"><i>$definitions['example']</i></p>
-							$if "synonyms" in definitions:
-								$ synonym = ""
-								$for synon in definitions['synonyms']:
-									<a href="https://SearchDeck.coolcodersj.repl.co?q=$synon"><p style="float: left; margin-right: 1px; scale: 95%; padding: 5px; border-radius: 6px; border: 1px solid #ccc;">$synon</p></a>
-								<br><br>
-						<br><br>
-
-				</div>
-			$if info != []:
-				<style>
-					#info:hover {
-						scale: 100% !important;
-					}
-				</style>
-				<div class="card" id="info" style="padding-bottom: 5px;">
-					$if info['Image']:
-						<img height="200px" src="https://duckduckgo.com/$info['Image']">
-					<h2>$info['Heading']</h2>
-					$:info['Abstract']
-					<br><hr>
-					$if info['Infobox'] != "":
-						<div id="infobox" style="transition: 0.2s; opacity: 0; display: none;">
-						$for topic in info['Infobox']['content']:
-							<p>$topic['label'] -- $topic['value']</p>
-							<hr>
-						</div>
-						<br><br>
-					<a href="$info['AbstractURL']">Read More On: $info['AbstractSource']</a>
-					$if info['Infobox'] != "":
-						<script>
-							function togglinfo() {
-								elem = document.getElementById("infobox")
-								elem2 = document.getElementById("oof")
-								elem3 = document.getElementById("oof2")
-								if (elem.style.opacity == '0') {
-									elem.style.display = 'block';
-									elem.style.opacity = '1';
-									elem2.innerHTML = "arrow_drop_up"
-									elem3.innerHTML = "Show Less"
-								}
-								else {
-									elem.style.display = 'none';
-									elem.style.opacity = '0'
-									elem2.innerHTML = "arrow_drop_down"
-									elem3.innerHTML = "Show More"
-								}
-							}
-						</script>
-						<br><br>
-						
-						<p style="float: left; padding-bottom: 20px !important;" onclick="togglinfo()" onmouseover="this.style.cursor = 'pointer'" id="oof2">Show More</p> <span id="oof" class="material-icons" style="float: left !important; margin-top: 7px;" onclick="togglinfo()">
-						arrow_drop_down
-						</span><br>
-						
-				</div>
-				<br><br>
-			$if ans != []:
-				<div class="card">
-					<h2>$ans['Answer']</h2>
-					<p>$ans['AnswerType']</p>
-				</div>
-				<br><br>
-			$if sort =="list":
-				<ul>
-					$if "Google" in engines:
-						<li><a href="#google">Google</a></li>
-					$if "Bing" in engines:
-						<li><a href="#bing">Bing</a></li>
-					$if "DuckDuckGo" in engines:
-						<li><a href="#ddg">DuckDuckGo</a></li>
-					$if "Yahoo" in engines:
-						<li><a href="#yahoo">Yahoo</a></li>
-				</ul>
-				<br><br><br>
-				<div id='containter'>
-				$if "Google" in engines:
-					<div id="google">
-						<h2>Google</h2>
-						<br><br>
-						$for result in google:
-							<a href="$result['link']" target="_blank">
-							<div class="card">
-								<h3>$result['title']</h3>
-								<p>$:result['desc']</p>
-							</div>
-							</a>
-					</div>
-				$if "Bing" in engines:
-					<div id="bing">
-						<h2>Bing</h2>
-						<br><br>
-						$for result in bing:
-							<a href="$result['link']" target="_blank">
-							<div class="card">
-								<h3>$result['title']</h3>
-								<p>$result['desc']</p>
-							</div>
-							</a>
-					</div>
-				$if "DuckDuckGo" in engines:
-					<div id="ddg">
-						<h2>DuckDuckGo</h2>
-						<br><br>
-						$for result in duckduckgo:
-							<a href="$result['link']" target="_blank">
-							<div class="card">
-								<h3>$result['title']</h3>
-								<p>$:result['desc']</p>
-							</div>
-							</a>
-					</div>
-				$if "Yahoo" in engines:
-					<div id="yahoo">
-						<h2>Yahoo</h2>
-						<br><br>
-						$for result in yahoo:
-							<a href="$result['link']" target="_blank">
-							<div class="card">
-								<h3>$result['title']</h3>
-								<p>$:result['desc']</p>
-							</div>
-							</a>
-					</div>
-				</div>
-			$else:
-				<table class="text">
-					<style>
-						td, th {
-							width: 300px;
-						}
-						.smal {
-							height: 100%;
-							width: 300px !important;
-							transition: 0.5s;
-							scale: 80% !important;
-						}
-						.smal:hover {
-							transition: 0.5s;
-							scale: 95% !important;
-						}
-						td, th, table, tr {
-							border: none;
-							background: none !important;
-						}
-					</style>
-					<tr>
-						$if "Google" in engines:
-							<th>Google</th>
-						$if "Bing" in engines:
-							<th>Bing</th>
-						$if "DuckDuckGo" in engines:
-							<th>DuckDuckGo</th>
-						$if "Yahoo" in engines:
-							<th>Yahoo</th>
-					</tr>
-					$ lis = [len(google), len(bing), len(duckduckgo), len(yahoo)] 
-					$lis.sort()
-					$ num = lis[-1]
-					$for x in range(num):
-						<tr>
-							$if "Google" in engines:
-								$if len(google) > x:
-									<td><a href="$google[x]['link']" target="_blank"><div class="card smal"><h2>$google[x]['title']</h2><br><p>$:google[x]['desc']</p></div></a></td>
-								$else:
-									<td></td>
-							$if "Bing" in engines:
-								$if len(bing) > x:
-									<td><a href="$bing[x]['link']" target="_blank"><div class="card smal"><h2>$bing[x]['title']</h2><br><p>$:bing[x]['desc']</p></div></a></td>
-								$else:
-									<td></td>
-							$if "DuckDuckGo" in engines:
-								$if len(duckduckgo) > x:
-									<td><a href="$duckduckgo[x]['link']" target="_blank"><div class="card smal"><h2>$duckduckgo[x]['title']</h2><br><p>$:duckduckgo[x]['desc']</p></div></a></td>
-								$else:
-									<td></td>
-							$if "Yahoo" in engines:
-								$if len(yahoo) > x:
-									<td><a href="$yahoo[x]['link']" target="_blank"><div class="card smal"><h2>$yahoo[x]['title']</h2><br><p>$:yahoo[x]['desc']</p></div></a></td>
-								$else:
-									<td></td>
-						</tr>
-				</table>
-		$elif typ =="image":
-			<script>
-				function toggle(engine) {
-					if (engine == "google") {
-						document.getElementById("bing").style.display = 'none';
-						document.getElementById("yahoo").style.display = 'none';
-						document.getElementById("duckduckgo").style.display = 'none';
-						document.getElementById("google").style.display = 'block';
-					}
-					if (engine == "bing") {
-						document.getElementById("bing").style.display = 'block';
-						document.getElementById("yahoo").style.display = 'none';
-						document.getElementById("duckduckgo").style.display = 'none';
-						document.getElementById("google").style.display = 'none';
-					}
-					if (engine == "duckduckgo") {
-						document.getElementById("bing").style.display = 'none';
-						document.getElementById("yahoo").style.display = 'none';
-						document.getElementById("duckduckgo").style.display = 'block';
-						document.getElementById("google").style.display = 'none';
-					}
-					if (engine == "yahoo") {
-						document.getElementById("bing").style.display = 'none';
-						document.getElementById("yahoo").style.display = 'block';
-						document.getElementById("duckduckgo").style.display = 'none';
-						document.getElementById("google").style.display = 'none';
-					}
-				}
-			</script>
-			<ul>
-				$if "Google" in engines:
-					<li onclick="toggle('google')" onmouseover="cursor: pointer;">Google</li>
-				$else:
-					<li onclick="toggle('google')" style="display: none;">Google</li>
-
-				$if "Bing" in engines:
-					<li onclick="toggle('bing')" onmouseover="cursor: pointer;">Bing</li>
-				$else:
-					<li onclick="toggle('bing')" style="display: none;">Bing</li>
-
-				$if "DuckDuckGo" in engines:
-					<li onclick="toggle('duckduckgo')" onmouseover="cursor: pointer;">DuckDuckGo</li>
-				$else:
-					<li onclick="toggle('duckduckgo')" style="display: none;">DuckDuckGo</li>
-
-				$if "Yahoo" in engines:
-					<li onclick="toggle('yahoo')" onmouseover="cursor: pointer;">Yahoo</li>
-				$else:
-					<li onclick="toggle('yahoo')" style="display: none;">Yahoo</li>
-			</ul>
+		$if typ =="image":
 			<br><br>
 			<div id="google">
 				$if "Google" in engines:
@@ -444,14 +121,14 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 		$elif typ == "video":
 			$for video in google:
 				<a href="https://youtube.com/$video['url_suffix']" target="_blank">
-				<div id="video">
+				<div class="video">
 					<img height="200px" style="float: left; margin-right: 10px;" src="$video['thumbnails'][0]">
 					<h3>$video['title']</h3>
 					<p>$video['channel'] -- $video['publish_time']</p>
 					<br>
 					<p style="float: center;">$video['long_desc']</p>
 					
-					<h5 style="float: center;">$video['duration'] | $video['views'] views</h5>
+					<h5 style="float: center;">$video['duration'] | $video['views']</h5>
 				</div>
 				</a>
 				<br><br>
@@ -459,7 +136,7 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 		$elif typ == "news":
 			$for article in google:
 				<a href="$article['link']" target="_blank">
-				<div id="video">
+				<div class="video">
 					<img height="200px" style="float: left; margin-right: 10px;" src="$article['img']">
 					<h3>$article['title']</h3>
 					<p>$article['media'] -- $article['date']</p>
@@ -470,24 +147,9 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 				<br><br>
 		
 		$elif typ == "maps":
-			<script>
-			var x = document.getElementById("maps");
-
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(showPosition);
-			} else { 
-				x.innerHTML = "Geolocation is not supported by this browser.";
-			}
-
-			function showPosition(position) {
-				var x = document.getElementById("maps");
 			$ q = q.replace(" ", "+")
-			x.innerHTML = `<div style="overflow:hidden;max-width:100%;width:500px;height:500px;"><div id="embeddedmap-canvas" style="height:100%; width:100%;max-width:100%;"><iframe style="height:100%;width:100%;border:0;" frameborder="0" src="https://www.google.com/maps/embed/v1/directions?origin=$${position.coords.latitude},$${position.coords.longitude}&destination=$q&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe></div><a class="googlemap-code-enabler" href="https://www.bootstrapskins.com/themes/wordpress" id="authmap-data">buy wordpress themes</a><style>#embeddedmap-canvas img{max-width:none!important;background:none!important;font-size: inherit;font-weight:inherit;}</style></div>`;
-			}
-			</script>
-			<p>SearchDeck only asks to access your current location because Google Maps requires an origin parameter. This location is not shared with anyone. 
 			<div id="maps">
-
+				<div style="overflow:hidden;max-width:100%;width:100%;height:500px;"><div id="embeddedmap-canvas" style="height:100%; width:100%;max-width:100%;"><iframe style="height:100%;width:100%;border:0;" frameborder="0" src="https://maps.google.com/maps?q=$q&t=directions&z=13&ie=UTF8&iwloc=&output=embed"></iframe></div><a class="googlemap-code-enabler" href="https://www.bootstrapskins.com/themes/wordpress" id="authmap-data">buy wordpress themes</a><style>#embeddedmap-canvas img{max-width:none!important;background:none!important;font-size: inherit;font-weight:inherit;}</style></div>
 			</div>
 
 		$elif typ == 'shopping':

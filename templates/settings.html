@@ -3,7 +3,7 @@ $def with (settings)
 <html>
 	<head>
 		<link rel="search" type="application/opensearchdescription+xml" title="SearchDeck" href="https://SearchDeck.coolcodersj.repl.co/static/application/opensearch.xml">
-		<link href="https://Minimalist.coolcodersj.repl.co/style.css" rel="stylesheet" type="text/css" />
+		<link href="/static/style.css" rel="stylesheet" type="text/css" />
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
 		<title>SearchDeck</title>
@@ -19,235 +19,97 @@ $def with (settings)
 <link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
 <div class="topnav text">
 <a class="brand" href="/">SearchDeck</a>
-<span class="material-icons" style="float: right; margin-top: 10px; margin-right: 30px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
-					settings
-				</span>
+<div class="topnavitem">
+		</div>
+    <span class="material-icons" style="margin-right: 30px;padding-top: 14px; margin-left: 15px;" onmouseover="this.style.cursor = 'pointer'" onclick="window.location.href='https://SearchDeck.coolcodersj.repl.co/settings'">
+	settings
+	</span>
 </div> 
 	</head>
 	<body>
-		<form method="post" action="settings">
+		<form method="post" action="settings" style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
 		<h2>User Settings</h2><br>
+		
+		<div>
 		<h3>Search Engines to Display -</h3>
-		$if "Google" in settings['engines']:
-			<label class="container">Google
-			<input type="checkbox" checked="checked" name="Google">
-			<span class="checkmark"></span>
-			</label>
-		$else:
-			<label class="container">Google
-			<input type="checkbox" name="Google">
-			<span class="checkmark"></span>
-			</label>
+		<label class="container">Google
+        <input type="checkbox" checked="$settings['engines']['Google']" name="Google">
+        <span class="checkmark"></span>
+        </label>
 
-		$if "Bing" in settings['engines']:
-			<label class="container">Bing
-			<input type="checkbox" checked="checked" name="Bing">
-			<span class="checkmark"></span>
-			</label>
-		$else:
-			<label class="container">Bing
-			<input type="checkbox" name="Bing">
-			<span class="checkmark"></span>
-			</label>
+        <label class="container">Bing
+        <input type="checkbox" checked="$settings['engines']['Bing']" name="Bing">
+        <span class="checkmark"></span>
+        </label>
 
-		$if "DuckDuckGo" in settings['engines']:
-			<label class="container">DuckDuckGo
-			<input type="checkbox" checked="checked" name="DuckDuckGo">
-			<span class="checkmark"></span>
-			</label>
-		$else:
-			<label class="container">DuckDuckGo
-			<input type="checkbox" name="DuckDuckGo">
-			<span class="checkmark"></span>
-			</label>
+        <label class="container">DuckDuckGo
+        <input type="checkbox" checked="$settings['engines']['DuckDuckGo']" name="DuckDuckGo">
+        <span class="checkmark"></span>
+        </label>
 
-		$if "Yahoo" in settings['engines']:
-			<label class="container">Yahoo
-			<input type="checkbox" checked="checked" name="Yahoo">
-			<span class="checkmark"></span>
-			</label>
-		$else:
-			<label class="container">Yahoo
-			<input type="checkbox" name="Yahoo">
-			<span class="checkmark"></span>
-			</label>
+        <label class="container">Yahoo
+        <input type="checkbox" checked="$settings['engines']['Yahoo']" name="Yahoo">
+        <span class="checkmark"></span>
+        </label>
+		</div>
 
 		<br>
 		<br>
+		<div>
 		<h3>What to Search by Default</h3><br>
-		$if settings['default_typ'] == "text":
-			<label class="container">Text
-			<input type="radio" checked="checked" value="text" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Images
-			<input type="radio" value="image" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Video
-			<input type="radio" value="video" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">News
-			<input type="radio" value="news" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Maps
-			<input type="radio" value="maps" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Shopping
-			<input type="radio" value="shopping" name="typ">
-			<span class="radio"></span>
-			</label>
-		$elif settings['default_typ'] == "image":
-			<label class="container">Text
-			<input type="radio" value="text" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Images
-			<input type="radio" value="image" checked="checked" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Videos
-			<input type="radio" value="video" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">News
-			<input type="radio" value="news" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Maps
-			<input type="radio" value="maps" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Shopping
-			<input type="radio" value="shopping" name="typ">
-			<span class="radio"></span>
-			</label>
-		$elif settings['default_typ'] == "video":
-			<label class="container">Text
-			<input type="radio" value="text" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Images
-			<input type="radio" value="image" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Video
-			<input type="radio" checked="checked" value="video" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">News
-			<input type="radio" value="news" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Maps
-			<input type="radio" value="maps" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Shopping
-			<input type="radio" value="shopping" name="typ">
-			<span class="radio"></span>
-			</label>
-		$elif settings['default_typ'] == "news":
-			<label class="container">Text
-			<input type="radio" value="text" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Images
-			<input type="radio" value="image" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Video
-			<input type="radio" value="video" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">News
-			<input type="radio" value="news" checked="checked" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Maps
-			<input type="radio" value="maps" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Shopping
-			<input type="radio" value="shopping" name="typ">
-			<span class="radio"></span>
-			</label>
-		$elif settings['default_typ'] == "maps":
-			<label class="container">Text
-			<input type="radio" value="text" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Images
-			<input type="radio" value="image" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Video
-			<input type="radio" value="video" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">News
-			<input type="radio" value="news" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Maps
-			<input type="radio" value="maps" checked="checked" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Shopping
-			<input type="radio" value="shopping" name="typ">
-			<span class="radio"></span>
-			</label>
-		$elif settings['default_typ'] == "shopping":
-			<label class="container">Text
-			<input type="radio" value="text" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Images
-			<input type="radio" value="image" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Video
-			<input type="radio" value="video" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">News
-			<input type="radio" value="news" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Maps
-			<input type="radio" value="maps" name="typ">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Shopping
-			<input type="radio" value="shopping" checked="checked" name="typ">
-			<span class="radio"></span>
-			</label>
+		<label class="container">Text
+        <input type="radio"
+            $if settings['default_typ']['text']:
+                checked="$settings['default_typ']['text']" 
+        value="text" name="typ">
+        <span class="radio"></span>
+        </label>
+        
+        <label class="container">Images
+        <input type="radio" value="image" 
+            $if settings['default_typ']['image']:
+                checked="$settings['default_typ']['image']" 
+            name="typ">
+        <span class="radio"></span>
+        </label>
+        
+        <label class="container">Video
+        <input type="radio" value="video" 
+            $if settings['default_typ']['video']:
+                checked="$settings['default_typ']['video']"
+            name="typ">
+        <span class="radio"></span>
+        </label>
+        
+        <label class="container">News
+        <input type="radio" value="news" 
+            $if settings['default_typ']['news']:
+                checked="$settings['default_typ']['news']" 
+            name="typ">
+        <span class="radio"></span>
+        </label>
+        
+        <label class="container">Maps
+        <input type="radio" value="maps" 
+            $if settings['default_typ']['maps']:
+                checked="$settings['default_typ']['maps']" 
+            name="typ">
+        <span class="radio"></span>
+        </label>
+        
+        <label class="container">Shopping
+        <input type="radio" value="shopping" 
+            $if settings['default_typ']['shopping']:
+                checked="$settings['default_typ']['shopping']"
+            name="typ">
+        <span class="radio"></span>
+        </label>
+		</div>
 		
 		<br>
 		<br>
-		<h3>How to Display Results by Default</h3><br>
-		$if settings['default_sort'] == "list":
-			<label class="container">List
-			<input type="radio" checked="checked" value="list" name="sort">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Table
-			<input type="radio" value="grid" name="sort">
-			<span class="radio"></span>
-			</label>
-		$else:
-			<label class="container">List
-			<input type="radio" value="list" name="sort">
-			<span class="radio"></span>
-			</label>
-			<label class="container">Table
-			<input type="radio" value="table" checked="checked" name="sort">
-			<span class="radio"></span>
-			</label>
-		<br><br>
+
+		<div>
 		$if settings['cache'] == 'Enabled':
 			<label class="container">Use Cache
 			<input type="checkbox" checked="checked" name="cache">
@@ -259,7 +121,9 @@ $def with (settings)
 			<span class="checkmark"></span>
 			</label>
 		<br><br>
-		<button type="submit">Save</button>
+		</div>
+			
+		<button class="btn" type="submit">Save</button>
 		</form>
 	</body>
 </html>

@@ -1,0 +1,242 @@
+ @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+.text, .link, p, h1, h2, h3, h4, h5, h6, a, label, legend, textarea, button, html, body, footer {
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg-14);
+}
+
+:root {
+/* 	--bg-15: #0c0c0c;
+	--bg-14: #181818;
+	--bg-13: #232323;
+	--bg-12: #2f2f2f;
+	--bg-11: #3b3b3b;
+	--bg-10: #474747;
+	--bg-9 : #535353;
+	--bg-8 : #5f5f5f;
+	--bg-7 : #6a6a6a;
+	--bg-6 : #767676;
+	--bg-5 : #828282;
+	--bg-4 : #8e8e8e;
+	--bg-3 : #9a9a9a;
+	--bg-2 : #a5a5a5;
+	--bg-1 : #b1b1b1; */
+
+	--bg-14: #1a2032;
+	--bg-13: #272e3f;
+
+	
+    --accent: #7494e5;
+    --accent-overlay: #7494e5BF;
+	--accent-overlay-dark: #7494e559;
+}
+
+
+.topnav.text {
+  display: flex;
+  margin-bottom: 100px;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+body {
+  padding: 20px;
+}
+.topnavitem {
+  margin-left: auto;
+  margin-top: 14px;
+  margin-right: 30px;
+}
+h2 {
+  text-align: center;
+}
+.input {
+  background: var(--bg-13);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: 'Open Sans', sans-serif;
+}
+* {
+  transition: 500ms;
+}
+
+
+ /* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #2c323a;
+  border-radius: 4px;
+}
+
+.radio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #2c323a;
+  border-radius: 50%;
+}
+
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark, .container input:checked ~ .radio {
+  background-color: var(--accent);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after, .radio:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after, .container input:checked ~ .radio:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 5px;
+  top: 3px;
+  width: 3px;
+  height: 6px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+} 
+
+.container .radio:after {
+  left: 4.5px;
+  top: 4.5px;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+} 
+
+.checkmark, .radio {
+    margin-top: 3px;
+}
+
+.btn {
+  background: var(--accent);
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  width: 25%;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bolder;
+}
+.btn:hover {
+  background: var(--accent-overlay);
+  cursor: pointer;
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2px var(--accent-overlay);
+    outline: none;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+.card {
+  border-radius: 8px;
+  /*! background: var(--bg-13); */
+  padding: 5px;
+  padding-left: 5px;
+  padding-left: 20px;
+  width: 50%;
+  margin-bottom: 50px;
+  border: none;
+  box-shadow: 0px 0px 1px 3px var(--bg-13);
+}
+.url {
+  font-size: 14px;
+  margin-top: 0px;
+  color: var(--accent);
+}
+.title {
+  margin-bottom: 0;
+}
+.title:hover {
+  color: var(--accent);
+}
+
+.card:hover {
+    scale: 0.99;
+}
+
+
+.video {
+  border-radius: 8px;
+  /*! background: var(--bg-13); */
+  padding: 5px;
+  padding-left: 5px;
+  padding-left: 20px;
+  width: 100%;
+  margin-bottom: 50px;
+  border: none;
+  box-shadow: 0px 0px 1px 3px var(--bg-13);
+  overflow: hidden;
+}
+
+.video:hover {
+    scale: 0.99;
+}
+
+.notactive {
+	color: #ccc;
+}
+
+.active {
+	color: white;
+}
+
+.material-icons {
+	color: white;
+}
+
+.material-icons:hover {
+	color: #ccc;
+	cursor: pointer;
+}

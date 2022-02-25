@@ -15,26 +15,17 @@ $def with (msg)
 <meta content="Search the Web! Search 4 different search engines at once and see the results side-by-side." property="og:description">
 	<head>
 		<link rel="search" type="application/opensearchdescription+xml" title="SearchDeck" href="https://SearchDeck.coolcodersj.repl.co/static/application/opensearch.xml">
-		<link rel="stylesheet" href="https://minimalist.coolcodersj.repl.co/style.css">
+		<link rel="stylesheet" href="static/style.css">
 		<title>Login | SearchDeck</title>
 		<div class="topnav text">
-		<a class="brand" href="/">SearchDeck</a>
-		<div class="topnavitem">
-    <a class="topnavitem active" href="/login">Login</a>
-  <a class="topnavitem" href="/signup">Signup</a>
- 
-  </div>
-</div> 
-		<style>
-			form {
-				padding: 20px;
-			}
-		</style>
-		<style>
-		html {
-			margin-top: 110px;
-		}
-		</style>
+<a class="brand" href="/">SearchDeck</a>
+<div class="topnavitem">
+    		<a class="topnavitem active" href="/login">Login</a>
+  			<a class="topnavitem" href="/signup">Signup</a>
+		</div>
+
+		</div> 
+
 	</head>
 
 	<body>
@@ -43,16 +34,26 @@ $if msg != "":
 	<h4 class="alert">$msg</h4><br><br>
 	
 <form method="post" action = "login">
+    <h2>Login</h2>
+    <style>
+        .input {
+            width: 50%;
+            margin-bottom: 15px;
+        }
+    </style>
 
-  <div class="form-group">
-    <input type="username" class="input" id="short" name="user"  aria-describedby="emailHelp" placeholder="Username" required>
-
-    <input type="password" class="input" id="url" name="passw" required placeholder="Password" required>
+  <div class="form-group" style="display: flex;  flex-direction: column; gap: 30px;align-items: center;">
+      <center style="display: flex;flex-direction: column;align-items: center;">
+    <input style="width: 200%;" type="username" class="input" id="short" name="user"  aria-describedby="emailHelp" placeholder="Username" required>
+    
+    <input style="width: 200%;" type="password" class="input" id="url" name="passw" required placeholder="Password" required>
+    </center>
   </div>
 
 	<br>
-  <button type="submit" class="btn btn-primary">Login</button>
+    <center>
+  <button style="width: 20%;" type="submit" class="btn btn-primary">Login</button>
+</center>
 </form>
-<iframe height="500px" width="100%" src="https://sjauth.coolcodersj.repl.co/badge" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
 	</body>
 </html>

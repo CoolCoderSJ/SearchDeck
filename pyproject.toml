@@ -10,7 +10,6 @@ lxml = "^4.6.3"
 replit = "^3.0.0"
 bs4 = "^0.0.1"
 googlenews = "^1.5.7"
-"web.py" = "^0.62"
 cchardet = "^2.1.7"
 youtube-search = "^2.1.0"
 

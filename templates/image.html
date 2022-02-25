@@ -1,0 +1,178 @@
+$def with (data, q, dict, info, ans)
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="search" type="application/opensearchdescription+xml" title="SearchDeck" href="https://SearchDeck.coolcodersj.repl.co/static/application/opensearch.xml">
+	  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon.png">
+		<title>SearchDeck</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="theme-color" content="#000EF2">
+<meta content="Search Results for $q | SearchDeck" property="og:title">
+<meta name="og:site_name" content="">
+<meta name="twitter:title" content="Search Results for $q | SearchDeck">
+<meta name="twitter:description" content="Search the Web! Search 4 different search engines at once and see the results side-by-side.">
+<meta name="twitter:image" content="">
+<meta name="og:image" content="">
+<meta content="Search the Web! Search 4 different search engines at once and see the results side-by-side." property="og:description">
+<link rel="alternate" type="application/json+oembed" href="https://embeds.ga/oembed/?name=CoolCOderSJ&url=https%3A%2F%2Fcoolcodersj.repl.co&providername=&providerurl=">
+    <link href="/static/text.css" rel="stylesheet" type="text/css" />
+	<link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	  <script>
+
+				function sort(style) {
+					console.log("ree")
+					var q = document.getElementById("q").value;
+					engines = document.getElementsByClassName("engine");
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&sort=$${style}`;
+					var i;
+					for (i=0; i < engines.length; i++) {
+						a = engines[i].value;
+						b = engines[i].name;
+						console.log(a)
+						console.log(b)
+						url += `&$${b}=$${a}`;
+					};
+					window.location.href = url
+				};
+				function typ(type) {
+					var q = document.getElementById("q").value;
+					url = `https://SearchDeck.coolcodersj.repl.co/?q=$${q}&typ=$${type}`;
+					engines = document.getElementsByClassName("engine");
+					var i;
+					for (i=0; i < engines.length; i++) {
+						a = engines[i].value
+						b = engines[i].name
+						url += `&$${b}=$${a}`
+					};
+					window.location.href = url
+				};
+			</script>
+	  <nav>
+		  <div class="search">
+			  <div class="search-icon">
+				<i class="fas fa-search"></i>
+			  </div>
+			  <form method="get" action="/" id="search" style="width: 90%;">
+			  <input placeholder="Search Anything..." name="q" value="$q" id="q">
+			  </form>
+			  <div class="enter-icon" onclick="document.getElementById('search').submit()">
+				  <form action="/" id="form|search">
+				  <i class="fas fa-angle-right"></i>
+				  </form>
+			  </div>
+		  </div>
+		  <br>
+		  <div class="nav-bottom">
+		  <a href="#">All</a>
+		  <a href="#" onclick="typ('image')">Images</a>
+		  <a href="#" onclick="typ('video')">Video</a>
+		  <a href="#" onclick="typ('news')">News</a>
+		  <a href="#" onclick="typ('maps')">Maps</a>
+		  <a href="#" onclick="typ('shopping')">Shopping</a>
+		  </div>
+	  </nav>
+	  <br>
+	$if dict != []:
+		<script>
+			function atoggle(elem, label) {
+			control = label
+			a = elem
+			console.log(control.innerHTML)
+			if (control.getAttribute("class") == "fas fa-play-circle") {
+				a.play();
+				console.log("Playing")
+				control.setAttribute("class", "fas fa-pause-circle");
+			}
+			else if (control.getAttribute("class") == "fas fa-pause-circle") {
+				a.pause();
+				control.setAttribute("class", "fas fa-play-circle");
+			}
+			}
+		</script>
+		$ dictionary = dict[0]
+		<div class="card special">
+			<h2 class="title">$dictionary['word']</h2>
+			<div class="display: flex;">
+			$for phonetic in dictionary['phonetics']:
+				$ id = dictionary['phonetics'].index(phonetic)
+				<p style="margin-left: 20px;">$phonetic['text'] <i class="fas fa-play-circle" onclick="atoggle(document.getElementById('$id'), this)"></i></p>
+					<audio style="display: hidden;" id="$id">
+					<source src="$phonetic['audio']" type="audio/mp3">
+					Your browser does not support the audio element.
+				</audio> 
+			</div>
+			<br>
+			$for meaning in dictionary['meanings']:
+				<h3>$meaning['partOfSpeech'].title()</h3>
+				$ count = 1
+				$for definitions in meaning['definitions']:
+					<p class="def">$count - $definitions['definition']</p>
+					$ count = count + 1
+					$if "example" in definitions:
+						<p class="example">$definitions['example']</p>
+					$if "synonyms" in definitions:
+						<div class="synonym-container">
+						$ synonym = ""
+						$for synon in definitions['synonyms']:
+							<a href="https://SearchDeck.coolcodersj.repl.co?q=$synon" class="synonym">$synon</a>
+						</div>
+					<br>
+		</div>
+	<style>
+		.card:hover {
+			cursor: pointer;
+		}
+	</style>
+	$if info != []:
+		<div class="card" id="info">
+			$if info['Image']:
+				<img height="200px" src="https://duckduckgo.com/$info['Image']">
+			<h2>$info['Heading']</h2>
+			$:info['Abstract']
+			<hr>
+			$if info['Infobox'] != "":
+				<div id="infobox" style="transition: 0.2s; opacity: 0; display: none;">
+				$for topic in info['Infobox']['content']:
+					$if "label" in topic:
+						<p>$topic['label'] -- $topic['value']</p>
+					<hr>
+				</div>
+				<br><br>
+			<a href="$info['AbstractURL']">Read More On: $info['AbstractSource']</a>
+			$if info['Infobox'] != "":
+				<script>
+					function togglinfo() {
+						elem = document.getElementById("infobox")
+						elem3 = document.getElementById("oof2")
+						if (elem.style.opacity == '0') {
+							elem.style.display = 'block';
+							elem.style.opacity = '1';
+							elem3.innerHTML = "Show Less"
+						}
+						else {
+							elem.style.display = 'none';
+							elem.style.opacity = '0'
+							elem3.innerHTML = "Show More"
+						}
+					}
+				</script>
+				<br><br>
+				
+				<p style="float: left; padding-bottom: 20px !important;" onclick="togglinfo()" onmouseover="this.style.cursor = 'pointer'" id="oof2">Show More</p> 
+				
+		</div>
+	$for result in data:	
+		$ url = result[0]['link']
+		<div class="card" onclick="window.open('$url')">
+			<h2 class="title">$result[0]['title']</h2>
+			<a href="" target="_blank" class="url">$result[0]['link']</a>
+			<p class="desc">$:result[0]['desc']</p>
+			<br>
+			<p style="color: #ccc">Found on: $", ".join(result[1])</p>
+		</div>
+	  <br><br><br>
+  </body>
+</html>

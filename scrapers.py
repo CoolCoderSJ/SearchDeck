@@ -292,7 +292,10 @@ def yahoo_shopping(query, que):
 
 def word_dictionary(word):
 	r = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en_US/{word}")
-	r = r.json()
+	try:
+		r = r.json()
+	except:
+		r = {"title": "", "message": "", "resolution": ""}
 	if "title" in r and "message" in r and "resolution" in r:
 		return []
 	else:
@@ -300,7 +303,10 @@ def word_dictionary(word):
 
 def infobox(query):
 	r = requests.get(f"https://api.duckduckgo.com/?q={query}&format=json&pretty=1")
-	r = r.json()
+	try:
+		r = r.json()
+	except:
+		r = {'Abstract': ""}
 	if r['Abstract'] == "":
 		return []
 	else:
@@ -308,7 +314,10 @@ def infobox(query):
 
 def ansbox(query):
 	r = requests.get(f"https://api.duckduckgo.com/?q={query}&format=json&pretty=1")
-	r = r.json()
+	try:
+		r = r.json()
+	except:
+		r = {'Answer': ""}
 	if r['Answer'] == "":
 		return []
 	else:

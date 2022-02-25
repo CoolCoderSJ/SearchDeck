@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+	--color-control-1: #292b3d;
+	--color-control-2: #1f202e;
+	--color-control-3: #14151f;
+	--color-ring-2: #1c1d28;
+	--color-ring-3: #171820;
+}
+
+* {
+	font-family: 'Poppins', sans-serif;
+	color: white;
+}
+
+html {
+	background: var(--color-control-1);
+	padding: 0px;
+}
+
+nav {
+	background: var(--color-control-2);
+	height: 100%;
+	padding: 20px;
+	margin: 0px;
+	border-radius: 4px;
+	box-shadow: black 1px 1px 1px 1px;
+	position: sticky;
+	top: 0;
+	z-index: 20;
+}
+
+.nav-bottom {
+	display: flex;
+}
+
+.nav-bottom a {
+	margin-right: 10px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	text-decoration: underline;
+}
+
+.search {
+	width: 60%;
+	height: 40px;
+	background: var(--color-control-3);
+	border: none;
+	border-radius: 6px;
+	display: flex;
+}
+
+.search input, .search input:focus {
+	width: 90%;
+	height: 38px;
+	background: var(--color-control-3);
+	border: none;
+	border-radius: 6px;
+	outline: none;
+	font-size: 1rem;
+	padding-left: 10px;
+}
+
+.search input:focus {
+	background: var(--color-control-3);
+	border-radius: 0px;
+	height: 38px;
+}
+
+.enter-icon {
+	border-radius: 0px 6px 6px 0px;
+}
+
+.search-icon, .enter-icon {
+	width: 5%;
+	background: var(--color-control-3);
+	cursor: pointer;
+}
+
+.search-icon {
+	border-radius: 6px 0px 0px 6px;
+}
+
+.fa-search, .fa-angle-right {
+	margin-top: 30%;
+	margin-left: 30%;
+}
+
+.fa-angle-right {
+	margin-left: 40%;
+}
+
+.fas:hover {
+	cursor: pointer;
+}
+
+.card {
+	background: var(--color-control-2);
+	height: 100%;
+	width: 50%;
+	border: none;
+	border-radius: 6px;
+	padding: 20px;
+	box-shadow: black 1px 1px 1px 1px;
+	margin-bottom: 20px;
+}
+
+.title {
+	margin-bottom: 0px;
+}
+
+.url {
+	color: #ccc;
+	margin-top: 0px;
+	width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.nospace {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.example {
+	color: #ccc;
+	font-style: italic;
+	margin-top: 2.5px;
+	margin-bottom: 0px;
+}
+
+.def {
+	margin-bottom: 0px;
+}
+
+.synonym-container {
+	margin-top: 4px;
+	display: flex;
+}
+
+.synonym-container .synonym {
+	border-radius: 20px;
+	background: var(--color-control-3);
+	margin-right: 0px;
+	padding: 10px;
+	color: #e6e6e6;
+	scale: 0.85;
+	margin-left: 0px;
+}
+
+.synonym:hover {
+	text-decoration: none;
+}
+
+.ring3 {
+	border-bottom: solid var(--color-ring-2) 20px;
+	border-radius: 6px;
+	height: 100%;
+	width: 100%;
+}
+
+.ring2 {
+	border-bottom: solid var(--color-ring-3) 16px;
+	border-radius: 6px;
+	height: 100%;
+	width: 100%;
+}
+
+
+@media (max-width: 768px) {
+	.search, .card {
+		width: 90%;
+	}
+}
