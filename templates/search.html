@@ -254,7 +254,8 @@ $def with (google, bing, duckduckgo, yahoo, q, sort, typ, engines, logged_in, di
 										<img height="200px" style="float: left; margin-right: 10px;" src="">
 										<h3>$yahoo[x]['title']</h3>
 										<br>
-										<p style="float: center;">$yahoo[x]['price']</p>			
+										$if "price" in yahoo[x]:
+											<p style="float: center;">$yahoo[x]['price']</p>			
 										</div>
 										</a></td>
 								$else:
