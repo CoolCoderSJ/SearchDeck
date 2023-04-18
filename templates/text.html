@@ -22,65 +22,6 @@ $def with (data, q, dict, info, ans, logged_in)
   </head>
   <body>
 	  <script>
-
-		  async function answer(q) {
-  var html = await fetch(
-    `https://cors.explosionscratc.repl.co/google.com/search?q=$${encodeURI(q)}`,
-    {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (X11; CrOS x86_64 13982.88.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.162 Safari/537.36",
-      },
-    }
-  ).then((res) => res.text());
-  window.d = new DOMParser().parseFromString(html, "text/html");
-  var el =
-    d.querySelector("[id*='lrtl-translation-text']") ||
-    [...d.querySelectorAll(".kp-header [data-md]")][1] ||
-    //Calculator results
-    [...document.querySelectorAll(".kCrYT")]?.[1] ||
-    [...d.querySelectorAll("*")]
-      .filter((i) => i.innerText)
-      .filter((i) => i.innerText.includes("Calculator Result"))
-      .slice(-2)?.[0]
-      ?.innerText?.split("\n")?.[2] ||
-    //Snippets
-    [...d.querySelectorAll("*")]
-      .filter((i) => i.innerText)
-      .filter(
-        (i) =>
-          i.innerText.includes("Featured snippet from the web") ||
-          i.innerText.includes("Description") ||
-          i.innerText.includes("Calculator result")
-      )
-      .slice(-1)?.[0]
-      ?.parentElement.querySelector("div span") ||
-    //Cards (like at the side)
-    d.querySelector(
-      ".card-section, [class*='__wholepage-card'] [class*='desc']"
-    ) ||
-    d.querySelector(".thODed")?.querySelector("div span") ||
-    [...d.querySelectorAll("[data-async-token]")]?.slice(-1)?.[0] ||
-    d.querySelector("miniapps-card-header")?.parentElement ||
-    d.querySelector("#tw-target");
-  var text = el?.innerText?.trim();
-  if (text.includes("translation") && text.includes("Google Translate")) {
-    text = text.split("Verified")[0].trim();
-  }
-  if (
-    text.includes("Calculator Result") &&
-    text.includes("Your calculations and results")
-  ) {
-    text = text
-      .split("them")?.[1]
-      .split("(function()")?.[0]
-      ?.split("=")?.[1]
-      ?.trim();
-  }
-  return text;
-}
-
-		  
 				function sort(style) {
 					console.log("ree")
 					var q = document.getElementById("q").value;
@@ -110,12 +51,6 @@ $def with (data, q, dict, info, ans, logged_in)
 				};
 
 
-		  answer("$q").then((ans) => {
-			  if (ans) {
-				  document.getElementById("answer-title").innerHTML = ans.replaceAll("\n", "<br>")
-				  document.getElementById("answer").style.display = "block";
-			  }
-		  })
 			</script>
       <div class="topnav text" style="margin-bottom: 0;">
 		<a class="brand" href="/">SearchDeck</a>
@@ -160,11 +95,6 @@ $def with (data, q, dict, info, ans, logged_in)
           <div style="border: 1px solid var(--bg-12);margin-top: 20px;"></div>
 	  </nav>
 	  <br>
-
-	   <div class="card" id="answer" style="display: none;">
-		  <h3 id="answer-title"></h3>
-	  </div>
-	  
 	$if dict != []:
 		<script>
 			function atoggle(elem, label) {
